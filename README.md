@@ -21,8 +21,8 @@
 - <a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">Live Application (Frontend)</a>
 
 
-🔗 **Backend API (Swagger Docs)**  
-▶️ [https://emr.busade.dev/api/docs](https://emrapi.busade.dev/api/docs)
+🌍 **Live Backend API (Swagger Docs)**  
+- [https://emrapi.busade.dev/api/docs](https://emrapi.busade.dev/api/docs)
 
 
 ## 🧪 End-to-End Clinical Workflow (Role + Emergency + Governance)
