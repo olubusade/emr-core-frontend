@@ -15,7 +15,7 @@
 # 🎥 Live Demo & Walkthrough
 
 🎥 **System Walkthrough (6–12 mins)**  
-▶️ [[https://loom.com/share/eefaf3b4384a48338490bd6e730d9be2](https://www.loom.com/share/eefaf3b4384a48338490bd6e730d9be2)]
+▶️ (https://www.loom.com/share/eefaf3b4384a48338490bd6e730d9be2)[https://loom.com/share/eefaf3b4384a48338490bd6e730d9be2]
 
 🌍 **Live Application (Frontend)**  
 - <a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">Live Application (Frontend)</a>
