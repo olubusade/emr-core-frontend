@@ -14,15 +14,15 @@
 ---
 # 🎥 Live Demo & Walkthrough
 
-🎥 **System Walkthrough (3–5 mins)**  
-▶️ [https://emr.busade.dev](https://emr.busade.dev)
+🎥 **System Walkthrough (6–12 mins)**  
+▶️ [[https://https://loom.com](https://www.loom.com/share/eefaf3b4384a48338490bd6e730d9be2)](https://www.loom.com/share/eefaf3b4384a48338490bd6e730d9be2)
 
 🌍 **Live Application (Frontend)**  
 - <a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">Live Application (Frontend)</a>
 
 
 🔗 **Backend API (Swagger Docs)**  
-▶️ [https://emr.busade.dev/api/docs](https://emr.busade.dev/api/docs)
+▶️ [https://emr.busade.dev/api/docs](https://emrapi.busade.dev/api/docs)
 
 
 ## 🧪 End-to-End Clinical Workflow (Role + Emergency + Governance)
