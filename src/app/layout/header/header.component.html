@@ -1,0 +1,58 @@
+<nav #navbar class="navbar active">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" onClick="return false;" class="navbar-toggle collapsed"
+        (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+      <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
+      <a class="navbar-brand" routerLink={{homePage}}>
+        <img src="assets/favicon.ico" alt="" />
+        <span class="logo-name">Busade's EMR Platform</span>
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
+      <ul class="float-start collapse-menu-icon">
+        <li>
+          <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse">
+            <i class="material-icons-outlined icon-color">
+              menu
+            </i>
+          </button>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- Full Screen Button -->
+        <li class="fullscreen">
+          <button mat-icon-button (click)="callFullscreen()" class=" nav-notification-icons">
+            <i class="material-icons-outlined icon-color">
+              fullscreen
+            </i>
+          </button>
+        </li>
+        <!-- #END# Full Screen Button -->
+        
+        <li class="nav-item user_profile" ngbDropdown>
+          <div class="chip dropdown-toggle" ngbDropdownToggle class="nav-notification-icons pt-0">
+            <img  [src]="'assets/images/avatar.png'" class="user_img" width="32" height="32" alt="User">
+            <span>{{userFullName}}</span>
+          </div>
+          <div ngbDropdownMenu class="notification-dropdown pullDown">
+            <div class="noti-list" style="position: relative; max-width: 600px; max-height: 300px;" [perfectScrollbar]>
+              <ul class="menu">
+                <li class="body">
+                  <ul class="user_dw_menu">
+                  
+                    <li>
+                      <a href="javascript:void(0);" (click)="logout()">
+                        <app-feather-icons [icon]="'log-out'" [class]="'user-menu-icons'"></app-feather-icons>Logout
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

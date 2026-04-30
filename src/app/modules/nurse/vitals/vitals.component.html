@@ -1,0 +1,115 @@
+<div class="card" *ngIf="vitalsHistory?.length > 0">
+
+  <div class="header">
+    <h2><strong>Vitals</strong> History</h2>
+  </div>
+
+  <div class="body table-responsive">
+
+    <table class="table table-hover">
+
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>BP</th>
+          <th>Temp</th>
+          <th>Pulse</th>
+          <th>Resp</th>
+          <th>SpO₂</th>
+          <th>Weight</th>
+          <th>Pain</th>
+          <th>Triage</th>
+          <th>Conscious</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let v of vitalsHistory">
+
+          <!-- DATE -->
+          <td>
+            <span class="text-primary font-bold">
+              {{ v.readingAt | date:'mediumDate' }}
+            </span><br>
+            <small class="text-muted">
+              {{ v.readingAt | date:'shortTime' }}
+            </small>
+          </td>
+
+          <!-- BLOOD PRESSURE -->
+          <td>{{ v.bloodPressure }}</td>
+
+          <!-- TEMP (dynamic unit) -->
+          <td>
+            <span>
+              {{ v.temperature }}
+              <small class="text-muted">
+                
+                <span *ngIf="v.temperatureUnit === 'C' || v.temperatureUnit === 'F'">°</span>
+                {{ v.temperatureUnit }}
+              </small>
+            </span>
+          </td>
+
+          <!-- PULSE -->
+          <td>{{ v.heartRate }} bpm</td>
+
+          <!-- RESP -->
+          <td>{{ v.respiratoryRate }}</td>
+
+          <!-- SPO2 -->
+          <td>{{ v.spo2 }}%</td>
+
+          <!-- WEIGHT (dynamic unit) -->
+          <td>
+            {{ v.weightKg }}
+            <small class="text-muted">{{ v.weightUnit || 'kg' }}</small>
+          </td>
+
+          <!-- PAIN -->
+          <td>
+            <span class="badge"
+              [ngClass]="v.painScale > 6 ? 'col-red' : (v.painScale > 3 ? 'col-orange' : 'col-green')">
+              {{ v.painScale }}
+            </span>
+          </td>
+
+          <!-- TRIAGE -->
+          <td>
+            <span class="badge"
+              [ngClass]="{
+                'col-green': v.triageLevel === 'LOW',
+                'col-orange': v.triageLevel === 'MEDIUM',
+                'col-red': v.triageLevel === 'HIGH',
+                'col-dark': v.triageLevel === 'CRITICAL'
+              }">
+              {{ v.triageLevel }}
+            </span>
+          </td>
+
+          <!-- CONSCIOUSNESS -->
+          <td>
+            {{ v.consciousnessLevel }}
+          </td>
+
+          <!-- ACTION -->
+          <td>
+            <button mat-icon-button color="primary"
+              (click)="editRecord(v)"
+              matTooltip="Prefill form with this record">
+
+              <mat-icon>edit</mat-icon>
+
+            </button>
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+</div>

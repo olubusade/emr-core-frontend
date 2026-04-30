@@ -1,0 +1,104 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Dashboard'" [items]="[]" [active_item]="'Dashboard'"></app-breadcrumb>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center p-5">
+      <mat-spinner diameter="40" class="m-auto"></mat-spinner>
+      <p class="mt-2 text-muted">Loading clinical overview...</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <div class="row">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-purple">
+                <i class="material-icons align-middle">face</i>
+              </div>
+              <div class="card-right">
+                <div><h5 class="float-end">Appointments</h5></div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0">{{ totalAppointments }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-green">
+                <i class="material-icons align-middle">person_add</i>
+              </div>
+              <div class="card-right">
+                <div><h5 class="float-end">Recent Patients</h5></div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0">{{ patientList.length }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-blue">
+                <i class="material-icons align-middle">local_activity</i>
+              </div>
+              <div class="card-right">
+                <div><h5 class="float-end">Earnings</h5></div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0">{{ totalEarnings | currency:'₦':'symbol':'1.0-0' }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2>Booked Appointments</h2>
+            </div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover ">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Patient ID</th>
+                      <th>Assigned Physician</th>
+                      <th>Date</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let appt of bookedAppointments; let i = index">
+                      <td class="table-img">
+                        <img [src]="'assets/images/avatar.png'" alt="">
+                      </td>
+                      <td><span class="pid-value">{{ appt.patientId | shortId }}</span> </td>
+                      <td>Dr. {{ appt.staff?.fullName }}</td>
+                      <td>{{ appt.appointmentDate | date: 'medium' }}</td>
+                      <td>
+                        <div class="badge col-red">{{ appt.reason }}</div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="bookedAppointments.length === 0">
+                      <td colspan="5" class="text-center">No recent appointments found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> </div>
+</section>

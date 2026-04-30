@@ -1,0 +1,260 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb 
+        [title]="isEditMode ? 'Edit Patient' : 'New Patient'" 
+        [items]="['Patients']" 
+        [active_item]="isEditMode ? 'Edit Patient' : 'New Patient'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2><strong>{{ isEditMode ? 'Edit Patient Information' : 'Patient Information' }}</strong></h2>
+          </div>
+
+          <div class="body">
+            <form class="m-4" [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+
+              <!-- Name -->
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" required>
+                    <mat-error *ngIf="patientForm.get('firstName')?.hasError('required')">
+                      First name is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName" required>
+                    <mat-error *ngIf="patientForm.get('lastName')?.hasError('required')">
+                      Last name is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Gender & Phone -->
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Gender</mat-label>
+                    <mat-select formControlName="gender" required>
+                      <mat-option value="male">Male</mat-option>
+                      <mat-option value="female">Female</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="patientForm.get('gender')?.hasError('required')">
+                      Gender is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Mobile Number</mat-label>
+                    <input matInput type="tel" formControlName="phone" placeholder="e.g. 08012345678">
+                    <mat-icon matSuffix>phone</mat-icon>
+                    
+                    <mat-error *ngIf="f['phone'].hasError('required')">
+                      Phone number is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="f['phone'].hasError('pattern')">
+                      Please enter a <strong>valid number</strong> (digits only)
+                    </mat-error>
+                    <mat-error *ngIf="f['phone'].hasError('minlength')">
+                      Number is too short
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- DOB -->
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Date Of Birth</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      formControlName="dob"
+                      [max]="maxDobDate"
+                      required
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    <mat-error *ngIf="patientForm.get('dob')?.hasError('required')">
+                      Date of birth is required
+                    </mat-error>
+                    <mat-error *ngIf="patientForm.get('dob')?.hasError('matDatepickerMax')">
+                      Date of birth cannot be in the future
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Email & Marital Status -->
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email" [readonly]="isEditMode">
+                    <mat-error *ngIf="patientForm.get('email')?.hasError('email')">
+                      Invalid email address
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Marital Status</mat-label>
+                    <mat-select formControlName="maritalStatus" required>
+                      <mat-option value="single">Single</mat-option>
+                      <mat-option value="married">Married</mat-option>
+                      <mat-option value="divorced">Divorced</mat-option>
+                      <mat-option value="widowed">Widowed</mat-option>
+                      <mat-option value="separated">Separated</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="patientForm.get('maritalStatus')?.hasError('required')">
+                      Marital status is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="row">
+                <div class="col-xl-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput formControlName="address"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Nationality / State / Occupation -->
+              <div class="row">
+                <div class="col-xl-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Nationality</mat-label>
+                    <mat-select formControlName="nationality" required>
+                      <mat-option *ngFor="let country of countries" [value]="country">
+                        {{ country }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>State of Origin</mat-label>
+                    <mat-select formControlName="stateOfOrigin" [required]="patientForm.get('nationality')?.value === 'Nigeria'">
+                      <mat-option *ngFor="let state of nigerianStates" [value]="state">
+                        {{ state }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Occupation</mat-label>
+                    <input matInput formControlName="occupation">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Blood & Genotype -->
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Blood Group</mat-label>
+                    <mat-select formControlName="bloodGroup" required>
+                      <mat-option *ngFor="let bg of ['A+','A-','B+','B-','AB+','AB-','O+','O-']" [value]="bg">
+                        {{ bg }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Genotype</mat-label>
+                    <mat-select formControlName="genotype" required>
+                      <mat-option *ngFor="let gt of ['AA','AS','SS','AC','SC']" [value]="gt">
+                        {{ gt }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <br/>
+              <h4 class="mb-3"><strong>Emergency Contact</strong></h4>
+
+              <div class="row">
+                <div class="col-xl-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Contact Name</mat-label>
+                    <input matInput formControlName="emergencyContactName" required>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Relationship</mat-label>
+                    <mat-select formControlName="emergencyRelationship" required>
+                      <mat-option value="Father">Father</mat-option>
+                      <mat-option value="Mother">Mother</mat-option>
+                      <mat-option value="Spouse">Spouse</mat-option>
+                      <mat-option value="Sibling">Sibling</mat-option>
+                      <mat-option value="Guardian">Guardian</mat-option>
+                      <mat-option value="Other">Other</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 mb-3">
+                  <mat-form-field class="example-full-width" >
+                    <mat-label>Contact Phone</mat-label>
+                    <input matInput type="tel" formControlName="emergencyContactPhone" placeholder="e.g. 08012345678">
+                    
+                    <mat-error *ngIf="f['emergencyContactPhone'].hasError('required')">
+                      Phone number is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="f['emergencyContactPhone'].hasError('pattern')">
+                      Please enter a <strong>valid number</strong> (digits only)
+                    </mat-error>
+                    <mat-error *ngIf="f['emergencyContactPhone'].hasError('minlength')">
+                      Number is too short
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="row">
+                <div class="col-xl-12 mb-3">
+                  <button
+                  *appHasPermission="'PATIENT_CREATE'"
+                  mat-raised-button color="primary" [disabled]="!patientForm.valid">
+                    {{ isEditMode ? 'Update' : 'Submit' }}
+                  </button>
+                  <button type="button" mat-button (click)="router.navigate(['/patients'])">Cancel</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

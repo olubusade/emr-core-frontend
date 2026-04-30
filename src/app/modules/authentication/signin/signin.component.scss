@@ -1,0 +1,8 @@
+/* You can apply this to the parent div or directly to the button */
+.role-buttons-sm button {
+    padding: 0 12px !important; /* Reduces horizontal padding */
+    line-height: 28px !important; /* Reduces vertical height */
+    min-width: 64px !important; 
+    font-size: 13px !important; /* Reduces text size */
+    height: 30px !important; /* Sets a fixed small height */
+}

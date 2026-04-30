@@ -1,0 +1,238 @@
+<section class="content">
+  <div class="content-block">
+
+    <!-- Breadcrumb -->
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="isEditMode ? 'Edit Clinical Vitals' : 'Capture Clinical Vitals'"
+        [items]="['Vitals']"
+        [active_item]="'Form'">
+      </app-breadcrumb>
+    </div>
+
+    <!-- PATIENT SUMMARY -->
+    <div class="card" *ngIf="patientInfo">
+      <div class="body">
+        <div class="row align-items-center">
+
+          <div class="col-auto">
+            <img
+              [src]="patientInfo.img || 'assets/images/avatar.png'"
+              class="rounded-circle"
+              width="60"
+              alt="Patient">
+          </div>
+
+          <div class="col">
+            <h5 class="mb-0">
+              {{ patientInfo.firstName }} {{ patientInfo.lastName }}
+            </h5>
+            <p class="mb-0">
+              <span class="pid-label">Patient ID:</span>
+              <code class="pid-value">{{ patientInfo.id | shortId }}</code>
+            </p>
+          </div>
+
+          <div class="col-md-2 border-start">
+            <small class="text-muted d-block">Gender</small>
+            <strong>{{ patientInfo.gender || 'Not Specified' }}</strong>
+          </div>
+
+          <div class="col-md-2 border-start">
+            <small class="text-muted d-block">Phone</small>
+            <strong>{{ patientInfo.phone || 'N/A' }}</strong>
+          </div>
+
+          <div class="col-md-2 border-start">
+            <small class="text-muted d-block">Age</small>
+            <strong>{{ patientInfo.age }} yrs</strong>
+          </div>
+
+          <div class="col-md-2 border-start">
+            <small class="text-muted d-block">Blood Group</small>
+            <strong class="text-danger">
+              {{ patientInfo.bloodGroup || 'N/A' }}
+            </strong>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- VITAL FORM -->
+    <div class="card">
+      <div class="header">
+        <h2>
+          {{
+            isEditMode
+              ? "Update Clinical Vitals"
+              : (lastTakenDate
+                  ? "Review Clinical Record (Read Only)"
+                  : "New Vital Signs Entry")
+          }}
+        </h2>
+      </div>
+
+        <div class="body">
+          <form [formGroup]="vitalForm" (ngSubmit)="onSubmit()">
+
+            <!-- ROW 1: VITAL SIGNS -->
+            <div class="row">
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>Temperature</mat-label>
+                  <input matInput type="number" formControlName="temperature">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>Blood Pressure</mat-label>
+                  <input matInput formControlName="bloodPressure">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>Pulse Rate</mat-label>
+                  <input matInput type="number" formControlName="heartRate">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>Respiratory Rate</mat-label>
+                  <input matInput type="number" formControlName="respiratoryRate">
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <!-- ROW 2: BODY -->
+            <div class="row">
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>Weight</mat-label>
+                  <input matInput type="number" formControlName="weightKg">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>Height</mat-label>
+                  <input matInput type="number" formControlName="heightCm">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width bg-light">
+                  <mat-label>BMI</mat-label>
+                  <input matInput formControlName="bmi" readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3">
+                <mat-form-field class="full-width">
+                  <mat-label>SpO₂</mat-label>
+                  <input matInput type="number" formControlName="spo2">
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <!-- ROW 3: CLINICAL CONTEXT (NEW) -->
+            <div class="row">
+
+              <div class="col-md-4" *ngFor="let field of selectFields">
+
+                <mat-form-field class="full-width">
+                  <mat-label>{{ field.label }}</mat-label>
+
+                  <mat-select [formControlName]="field.formControl">
+
+                    <mat-option
+                      *ngFor="let opt of field.options"
+                      [value]="opt.value">
+                      {{ opt.label }}
+                    </mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+
+              </div>
+
+            </div>
+
+            <!-- ROW 4: UNITS (your loop stays clean) -->
+            <div class="row">
+              <div class="col-md-4" *ngFor="let field of unitFields">
+
+                <mat-form-field class="full-width">
+                  <mat-label>{{ field.label }}</mat-label>
+
+                  <mat-select [formControlName]="field.formControl">
+                    <mat-option *ngFor="let opt of field.options" [value]="opt.value">
+                      {{ opt.label }}
+                    </mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+
+              </div>
+            </div>
+
+            <!-- PAIN -->
+            <div class="row">
+              <div class="col-12">
+
+                <label>Pain Scale: {{ vitalForm.value.painScale }}</label>
+
+                <mat-slider
+                  min="0"
+                  max="10"
+                  step="1"
+                  thumbLabel
+                  formControlName="painScale"
+                  (change)="onSliderChange($event)">
+                </mat-slider>
+
+              </div>
+            </div>
+
+            <!-- NOTES -->
+            <div class="row mt-3">
+              <div class="col-12">
+                <mat-form-field class="full-width">
+                  <mat-label>Clinical Notes</mat-label>
+                  <textarea matInput rows="3" formControlName="notes"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="mt-4">
+
+              <button mat-raised-button color="primary"
+                [disabled]="vitalForm.invalid || loading">
+                Save Record
+              </button>
+
+            </div>
+
+          </form>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="mt-4" *ngIf="patientId">
+      <app-vitals-list
+        [patientId]="patientId"
+        (onEdit)="handleHistoryEdit($event)">
+      </app-vitals-list>
+    </div>
+
+  </div>
+</section>

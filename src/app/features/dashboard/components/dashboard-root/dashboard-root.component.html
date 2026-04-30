@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="userRole">
+    <app-admin-view *ngSwitchCase="'ADMIN'"></app-admin-view>
+    <app-admin-view *ngSwitchCase="'SUPER_ADMIN'"></app-admin-view>
+    <app-doctor-view *ngSwitchCase="'DOCTOR'"></app-doctor-view>
+    <app-nurse-view *ngSwitchCase="'NURSE'"></app-nurse-view>
+    <app-receptionist-view *ngSwitchCase="'RECEPTIONIST'"></app-receptionist-view>
+
+    <app-patient-view *ngSwitchCase="'PATIENT'"></app-patient-view>
+
+    <div *ngSwitchDefault>
+        <p *ngIf="!userRole">Loading dashboard...</p>
+        <p *ngIf="userRole">Dashboard content not available for role: {{ userRole }}</p>
+    </div>
+</ng-container>

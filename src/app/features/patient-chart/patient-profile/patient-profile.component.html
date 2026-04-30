@@ -1,0 +1,337 @@
+<section class="content">
+  <div class="content-block">
+
+    <!-- HEADER -->
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Patient Profile'"
+        [items]="['Patients']"
+        [active_item]="'Profile'">
+      </app-breadcrumb>
+    </div>
+
+    <!-- LOADING -->
+    <ng-container *ngIf="patient$ | async as patient; else loading">
+
+      <div class="row clearfix">
+
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-4 col-md-12">
+
+          <!-- PROFILE CARD -->
+          <div class="card shadow-sm border-0">
+            <div class="contact-grid">
+              <div class="profile-header">
+
+                <div class="profile-image">
+                  <img [src]="patient.profileImage || 'assets/images/avatar.png'" />
+                </div>
+
+                <div class="user-name mt-3">
+                  {{ patient.firstName }} {{ patient.lastName }}
+                </div>
+
+                <div class="text-muted small mb-3">
+                  ID: {{ patient.id | shortId }}
+                </div>
+
+                <div class="d-flex justify-content-center gap-2">
+                  <span class="badge" [ngClass]="patient.genotype === 'SS' ? 'bg-red' : 'bg-cyan'">
+                    {{ patient.genotype || 'N/A' }}
+                  </span>
+                  <span class="badge bg-blue">{{ patient.bloodGroup || 'N/A' }}</span>
+                  <span class="badge bg-orange">{{ patient.gender | titlecase }}</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- BIO DATA -->
+          <div class="card">
+            <div class="header"><h2>Bio-Data</h2></div>
+
+            <div class="body p-t-10">
+
+              <div class="info-block">
+                <small>Date of Birth</small>
+                <p>{{ patient.dob | date:'longDate' }}</p>
+              </div>
+
+              <hr>
+
+              <div class="info-block">
+                <small>Occupation</small>
+                <p>{{ patient.occupation || 'Not Specified' }}</p>
+              </div>
+
+              <hr>
+
+              <div class="info-block">
+                <small>Email</small>
+                <p class="text-lowercase">{{ patient.email }}</p>
+              </div>
+
+              <hr>
+
+              <div class="info-block">
+                <small>Phone</small>
+                <p>{{ patient.phone }}</p>
+              </div>
+
+              <hr>
+
+              <div class="info-block">
+                <small>Address</small>
+                <p>{{ patient.address }}, {{ patient.stateOfOrigin }} State</p>
+              </div>
+
+              <hr>
+
+              <div class="info-block">
+                <small>Emergency Contact</small>
+
+                <p *ngIf="patient.emergencyContactName; else noEmergency">
+                  {{ patient.emergencyContactName }}
+                  <span class="text-primary">({{ patient.emergencyRelationship }})</span><br />
+                  {{ patient.emergencyContactPhone }}
+                </p>
+
+                <ng-template #noEmergency>
+                  <p class="text-danger small">Not Provided</p>
+                </ng-template>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-8 col-md-12">
+
+          <!-- LOCKED -->
+          <div
+            *ngIf="uiState.isLocked && uiState.btgState !== 'APPROVED_ACTIVE'"
+            class="card p-5 text-center shadow-none"
+          >
+            <mat-icon class="text-warning" style="font-size:56px;">
+              lock
+            </mat-icon>
+
+            <h4>Clinical Access Restricted</h4>
+
+            <p class="text-muted">
+              You do not have permission to view this patient's records.
+            </p>
+
+            <!-- OPTIONAL: SHOW CONTEXT WHEN BTG IS IN PLAY -->
+            <div *ngIf="uiState.btgState === 'PENDING'" class="mt-3 alert alert-info">
+              ⏳ Break-Glass request is pending approval
+            </div>
+
+            <div *ngIf="uiState.btgState === 'REJECTED'" class="mt-3 alert alert-danger">
+              ❌ Break-Glass request was rejected
+            </div>
+
+            <div *ngIf="uiState.btgState === 'APPROVED_EXPIRED'" class="mt-3 alert alert-warning">
+              ⚠️ Emergency access expired
+            </div>
+          </div>
+                
+            <!-- CLINICAL AREA -->
+             <!-- VIEWERS (BTG SESSION) - for Doctor and admin-->
+              <div *ngIf="uiState.canViewClinical && !isNurse()"
+              >
+                    <div 
+                *ngIf="uiState.btgState === 'APPROVED_ACTIVE' && btgViewers$ | async as viewers" class="btg-viewers mt-3">
+
+                  <h6 class="mb-2">
+                    Active Emergency Access Users
+                  </h6>
+
+                  <!-- EMPTY STATE -->
+                  <div *ngIf="viewers.length === 0" class="text-muted small">
+                    No active viewers
+                    <span class="live-dot"></span> Live (0)
+                  </div>
+
+                  <!-- LIST -->
+                  <div *ngIf="viewers.length > 0" class="d-flex flex-wrap gap-2">
+
+                    <span
+                      *ngFor="let v of viewers"
+                      class="badge bg-info text-dark"
+                    >
+                      {{ v.name }} ({{ v.role }})
+                    </span>
+
+                    <span class="live-dot"></span>
+                    Live ({{ viewers.length }})
+                  </div>
+
+                </div>
+              </div>
+              {{uiState.canVi}}
+            <!-- LOCKED STATE -->
+            <ng-template #noClinical>
+
+              <div class="card permission-card text-center p-5">
+
+                <mat-icon class="lock-icon text-warning" style="font-size:56px;">
+                  lock
+                </mat-icon>
+
+                <h4 class="title">Clinical Access Restricted</h4>
+
+                <p class="subtitle">
+                  You currently do not have permission to view clinical notes.
+                </p>
+
+                <small class="hint">
+                  Access is controlled by RBAC + Break-The-Glass policy.
+                </small>
+
+                <!-- REQUEST BTG -->
+                <div class="mt-4"
+                  *ngIf="uiState.canRequestBTG">
+
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="openBTGModal()">
+
+                    Request Emergency Access
+                  </button>
+
+                </div>
+
+                <!-- PENDING -->
+                <div *ngIf="uiState.btgState === 'PENDING'" class="alert alert-info">
+                  ⏳ Awaiting approval
+                </div>
+              </div>
+
+            </ng-template>
+            <!--Locked for non-clinical staff-->
+          <div *ngIf="!uiState.isLocked">
+            <!-- ACTIVE BTG For the exact nurse who initiated the BTG request-->
+            <div *ngIf="BTGRequestedByMe">
+              
+              <div *ngIf="uiState.btgState === 'APPROVED_ACTIVE'">
+                  
+                <div *ngIf="btgCountdown$ | async as timer" class="alert"
+                [ngClass]="{
+                  'alert-success': timer.level === 'safe',
+                  'alert-warning': timer.level === 'warning',
+                  'alert-danger': timer.level === 'critical'
+                }">
+
+                <mat-icon [class.blink]="timer.level === 'critical'">
+                  timer
+                </mat-icon>
+
+                Emergency Access Active
+
+                <div>
+                  ⏳ Time Left:
+                  <strong>{{ timer.text }}</strong>
+                </div>
+
+              </div>
+              </div>
+                <!-- EXPIRED -->
+              <div *ngIf="uiState.btgState === 'APPROVED_EXPIRED'" class="alert alert-warning">
+                ⚠️ Emergency access expired
+              </div>
+
+              <!-- REJECTED -->
+              <div *ngIf="uiState.btgState === 'REJECTED'" class="alert alert-danger">
+                ❌ Request rejected
+              </div>
+
+            </div>
+          </div>
+
+          
+            <ng-container *ngIf="uiState.canViewClinical; else noClinical">
+              
+              <app-clinical-notes-history
+                [patientId]="patientId"
+                >
+              </app-clinical-notes-history>
+
+            </ng-container>
+          <!-- VITALS -->
+          <div class="mt-4">
+
+            <app-vitals-list
+              *ngIf="uiState.canViewVitals"
+              [patientId]="patientId">
+            </app-vitals-list>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </ng-container>
+
+    <!-- LOADING -->
+    <ng-template #loading>
+      <div class="text-center p-5">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p class="mt-3">Synchronizing Patient Records...</p>
+      </div>
+    </ng-template>
+
+  </div>
+</section>
+
+<!-- BTG MODAL -->
+<ng-template #btgModal>
+
+  <h2 mat-dialog-title>Emergency Access Request</h2>
+  
+
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Access Duration</mat-label>
+
+      <mat-select [(ngModel)]="durationMinutes">
+        <mat-option [value]="5">5 minutes</mat-option>
+        <mat-option [value]="10">10 minutes</mat-option>
+        <mat-option [value]="15">15 minutes</mat-option>
+        <mat-option [value]="30">30 minutes</mat-option>
+        <mat-option [value]="60">60 minutes</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>Select reason for Break Glass access:</p>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Reason</mat-label>
+
+      <mat-select [(ngModel)]="btgReason">
+        <mat-option *ngFor="let r of btgReasons" [value]="r">
+          {{ r }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="submitBTG()"
+      [disabled]="!btgReason">
+      Submit Request
+    </button>
+  </mat-dialog-actions>
+
+</ng-template>

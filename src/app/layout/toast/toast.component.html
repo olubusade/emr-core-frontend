@@ -1,0 +1,13 @@
+<div 
+  *ngIf="isVisible" 
+  class="toast-container {{ toast.type }}" 
+  [ngClass]="{ 'show': isVisible }"
+>
+  <div class="toast-header">
+    <strong class="me-auto">{{ toast.title }}</strong>
+    <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    {{ toast.message }}
+  </div>
+</div>

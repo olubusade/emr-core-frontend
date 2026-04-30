@@ -1,0 +1,83 @@
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  .header {
+    background: linear-gradient(45deg, #001f3f, #003366); // Using your Brand Navy
+    color: #ffffff;
+    padding: 15px 20px;
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+
+      mat-icon {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .body {
+    background-color: #ffffff;
+  }
+}
+
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  padding: 15px 20px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  .text-muted {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: #888 !important;
+  }
+
+  strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  mat-icon {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    opacity: 0.8;
+  }
+}
+
+// BMI Styling
+.bg-light {
+  background-color: #f4f7f6 !important;
+  border-top: 1px solid #eee;
+
+  h4 {
+    margin-top: 5px;
+    font-size: 1.4rem;
+  }
+}
+
+// Utility classes for abnormal ranges
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-warn {
+  color: #ff9800 !important;
+}
+
+// Loading state
+.mat-spinner {
+  margin: 0 auto;
+}

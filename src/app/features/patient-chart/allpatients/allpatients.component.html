@@ -1,0 +1,166 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb 
+        [title]="'All Patient'" 
+        [items]="['Patients']" 
+        [active_item]="'All Patient'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="body">
+
+            <!-- HEADER -->
+            <div class="materialTableHeader">
+              <div class="row">
+                <div class="col-8">
+                  <ul class="header-buttons-left ms-0">
+                    <li class="dropdown m-l-20">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input #filter type="text" placeholder="Search patients..." 
+                        class="browser-default search-field" aria-label="Search box">
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-4 text-end">
+                  <button mat-mini-fab color="primary" (click)="addNew()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+
+                  <button mat-mini-fab color="primary" class="ms-2" (click)="refresh()">
+                    <mat-icon>refresh</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+
+              <mat-table [dataSource]="patients" class="mat-cell">
+
+                <!-- SELECT -->
+                <ng-container matColumnDef="select">
+                  <mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox
+                      (change)="masterToggle()"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                  </mat-header-cell>
+
+                  <mat-cell *matCellDef="let row">
+                    <mat-checkbox
+                      (click)="$event.stopPropagation()"
+                      (change)="selection.toggle(row)"
+                      [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                  </mat-cell>
+                </ng-container>
+                <!-- ID -->
+                <ng-container matColumnDef="id">
+                  <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <code class="pid-value">{{ row.id | shortId}}</code>
+                  </mat-cell>
+                </ng-container>
+                <!-- NAME -->
+                <ng-container matColumnDef="fullName">
+                  <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.fullName }}</mat-cell>
+                </ng-container>
+
+                <!-- GENDER -->
+                <ng-container matColumnDef="gender">
+                  <mat-header-cell *matHeaderCellDef>Gender</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.gender }}</mat-cell>
+                </ng-container>
+
+                <!-- EMAIL -->
+                <ng-container matColumnDef="email">
+                  <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
+                </ng-container>
+
+                <!-- PHONE -->
+                <ng-container matColumnDef="phone">
+                  <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.phone || '—' }}</mat-cell>
+                </ng-container>
+
+                <!-- BLOOD GROUP -->
+                <ng-container matColumnDef="bloodGroup">
+                  <mat-header-cell *matHeaderCellDef>Blood Group</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.bloodGroup || '—' }}</mat-cell>
+                </ng-container>
+
+                <!-- DOB -->
+                <ng-container matColumnDef="dob">
+                  <mat-header-cell *matHeaderCellDef>DOB</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.displayDob }}</mat-cell>
+                </ng-container>
+
+                <!-- STATUS -->
+                <ng-container matColumnDef="status">
+                  <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.displayStatus }}</mat-cell>
+                </ng-container>
+
+                <!-- ACTIONS -->
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                  <mat-cell
+                  *matCellDef="let row">
+                    <button
+                    *appHasPermission="'PATIENT_CREATE'"
+                    mat-icon-button (click)="editPatient(row)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+
+                <!-- ROWS -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row 
+                  *matRowDef="let row; columns: displayedColumns;" 
+                  (click)="editPatient(row)" 
+                  style="cursor: pointer">
+                </mat-row>
+
+              </mat-table>
+
+              <!-- LOADING -->
+              <div *ngIf="patientService.isTblLoading" class="tbl-spinner text-center mt-3">
+                <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+              </div>
+
+              <!-- EMPTY STATE -->
+                <app-no-record-found 
+                *ngIf="!patientService.isTblLoading && patientService.totalCount === 0"
+                [message]="'No patients found'"
+                [subMessage]="'There are no patient records to show.'"
+                [showButton]="true"
+                [buttonText]="'Refresh List'"
+                (actionClicked)="refreshTable()">
+              </app-no-record-found>
+
+              <!-- PAGINATOR -->
+              <mat-paginator
+                [length]="patientService.totalCount"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+              </mat-paginator>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

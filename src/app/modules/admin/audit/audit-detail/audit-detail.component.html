@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Audit Details</h2>
+
+<mat-dialog-content>
+
+  <div class="mb-2">
+    <strong>Action:</strong> {{ data.action }}
+  </div>
+
+  <div class="mb-2">
+    <strong>Entity:</strong> {{ data.entity }}
+  </div>
+
+  <div class="mb-2">
+    <strong>User:</strong> {{ data.userName }} ({{ data.userEmail }})
+  </div>
+
+  <div class="mb-2">
+    <strong>Role:</strong> {{ data.role }}
+  </div>
+
+  <div class="mb-2">
+    <strong>IP Address:</strong> {{ data.ipAddress }}
+  </div>
+
+  <div class="mb-2">
+    <strong>Date:</strong> {{ data.createdAt | date:'medium' }}
+  </div>
+
+  <hr />
+
+  <div>
+    <strong>Details:</strong>
+    <pre class="p-2 bg-light rounded">
+         <li *ngFor="let key of safeKeys(data.details)">
+            <strong>{{ key }}:</strong> {{ data.details[key] }}
+        </li>
+    </pre>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

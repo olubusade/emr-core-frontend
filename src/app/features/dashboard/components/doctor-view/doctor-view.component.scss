@@ -1,0 +1,30 @@
+// Custom Crovix palette based on your brand colors
+$navy-dark: #001f3f;
+$teal-accent: #008080;
+$soft-bg: #f4f7f6;
+
+.l-bg-card1 { background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important; }
+.l-bg-card2 { background: linear-gradient(135deg, #289cf5 0%, #84c0ec 100%) !important; }
+.l-bg-card3 { background: linear-gradient(135deg, #23bdb8 0%, #65a986 100%) !important; }
+.l-bg-card4 { background: linear-gradient(135deg, #f57b51 0%, #f1a48a 100%) !important; }
+
+.card {
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1) !important;
+  }
+}
+
+:host {
+  display: block;
+}
+
+.card {
+  min-height: 100px; // Prevents card collapse
+}
+
+apx-chart {
+  display: block;
+  width: 100%;
+}

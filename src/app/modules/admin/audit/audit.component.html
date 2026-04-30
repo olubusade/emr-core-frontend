@@ -1,0 +1,109 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb 
+        [title]="'Audit Logs'" 
+        [items]="['System']" 
+        [active_item]="'Audit Trail'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="card">
+      <div class="header d-flex justify-content-between align-items-center">
+        <h2>System Audit Logs</h2>
+      </div>
+
+      <div class="body">
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Search by entity (patient, appointment...)</mat-label>
+          <input matInput (input)="applyFilter($event)">
+        </mat-form-field>
+
+        <div *ngIf="isLoading" class="tbl-spinner">
+          <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <ng-container *ngIf="audits$ | async as audits">
+
+          <mat-table [dataSource]="audits" *ngIf="audits.length > 0">
+
+            <ng-container matColumnDef="action">
+              
+              <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+              <mat-cell *matCellDef="let a">
+                {{ a.action }}
+            </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="entity">
+              <mat-header-cell *matHeaderCellDef>Entity</mat-header-cell>
+              <mat-cell *matCellDef="let a">{{ a.entity }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="user">
+              <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+              <mat-cell *matCellDef="let a">
+                
+                 {{ a.userName }}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="userId">
+              <mat-header-cell *matHeaderCellDef>User ID</mat-header-cell>
+              <mat-cell *matCellDef="let a">
+                <code class="pid-value">{{ a.userId | shortId }}</code>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
+              <mat-cell *matCellDef="let a">
+                <span class="role-chip" [ngClass]="a.role">
+                 {{ a.role }}
+                </span>
+                 
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="ipAddress">
+              <mat-header-cell *matHeaderCellDef>IP</mat-header-cell>
+              <mat-cell *matCellDef="let a">{{ a.ipAddress }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="createdAt">
+              <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+              <mat-cell *matCellDef="let a">
+                {{ a.createdAt | date:'dd MMM yyyy, HH:mm' }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="details">
+              <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
+              <mat-cell *matCellDef="let a">
+                <button color="primary" mat-button (click)="viewDetails(a)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+          </mat-table>
+
+          <app-no-record-found 
+            *ngIf="audits.length === 0 && !isLoading"
+            [message]="'No audit logs found.'">
+          </app-no-record-found>
+
+        </ng-container>
+
+        <mat-paginator 
+          [length]="totalRecords" 
+          [pageSize]="pageSize" 
+          (page)="onPageChange($event)">
+        </mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</section>

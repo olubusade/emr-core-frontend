@@ -1,0 +1,174 @@
+<section class="appointment-dashboard content-block">
+    <div class="block-header">
+        <app-breadcrumb [title]="'Appointments'" [items]="['Schedule']" [active_item]="'List'"></app-breadcrumb>
+    </div>
+
+    <div class="card">
+        <div class="body">
+            <ng-container *ngIf="appointments$ | async as appointments">
+                <div class="materialTableHeader">
+                    <div class="row">
+                        <div class="col-8 d-flex align-items-center">
+                            <h2 class="m-0 me-3"><strong>Appointments</strong></h2>
+                            
+                            <mat-form-field appearance="outline" class="search-field">
+                                <mat-label>Search appointments</mat-label>
+                                <input matInput #filter (keyup)="applyFilter()" placeholder="Filter by name, email, etc.">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                            
+                            <div class="icon-button-demo m-l-10" [hidden]="!selection.hasValue()">
+                                <button mat-mini-fab color="warn" (click)="removeSelectedRows()" matTooltip="Delete Selected">
+                                    <mat-icon class="col-white">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="col-4 d-flex justify-content-end align-items-center">
+                            <ul class="header-buttons">
+                                <li *ngIf="authService.hasPermission('APPOINTMENT_CREATE')">
+                                    <button mat-mini-fab color="primary" (click)="addNew()" matTooltip="Book New Appointment">
+                                        <mat-icon class="col-white">add</mat-icon>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button mat-mini-fab color="primary" (click)="refreshTable()" matTooltip="Refresh List">
+                                        <mat-icon class="col-white">refresh</mat-icon>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tabs-container mb-4 mt-2">
+                    <button 
+                        *ngIf="isReceptionist || authService.hasRole(Role.Admin)" 
+                        class="tab-button"
+                        [class.active]="statusChanged.value === 'ALL'" 
+                        (click)="changeFilter('ALL')">All
+                    </button>
+                    <button 
+                        class="tab-button"
+                        [class.active]="statusChanged.value === 'TODAY'" 
+                        (click)="changeFilter('TODAY')">Today
+                    </button>
+                    <button 
+                        class="tab-button"
+                        [class.active]="statusChanged.value === 'UPCOMING'" 
+                        (click)="changeFilter('UPCOMING')">Upcoming
+                    </button>
+                    <button 
+                        class="tab-button"
+                        [class.active]="statusChanged.value === 'PAST'" 
+                        (click)="changeFilter('PAST')">Past
+                    </button>
+                </div>
+
+                <div class="responsive_table">
+                    <mat-table #table [dataSource]="appointments" matSort (matSortChange)="onSortChange($event)" class="mat-cell">
+                        
+                        <ng-container matColumnDef="select">
+                            <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                                <mat-checkbox 
+                                    (change)="$event ? masterToggle(appointments) : null"
+                                    [checked]="selection.hasValue() && isAllSelected(appointments)"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected(appointments)" 
+                                    [ngClass]="'tbl-checkbox'">
+                                </mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                                <mat-checkbox (click)="$event.stopPropagation()" 
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)" 
+                                    [ngClass]="'tbl-checkbox'">
+                                </mat-checkbox>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="name">Patient Name</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> 
+                                <a [routerLink]="['/patients', row.patientId]">{{row.name}}</a>
+                            </mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="email">Email</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.email}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="gender">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="gender">Gender</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.gender}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="date">Date</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.date | date: 'MM/dd/yyyy' }}
+                            </mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="time">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="time">Time</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.time}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="mobile">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="mobile">Mobile</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.mobile}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="doctor">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="doctor">Assigned Staff</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <span *ngIf="isReceptionist || authService.hasRole(Role.Admin)">
+                                    {{row.doctor}} 
+                                </span>
+                                <span *ngIf="isDoctor || isNurse">-</span>
+                            </mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="injury">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header sortId="injury">Reason</mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.injury}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
+                            <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
+                                
+                                <button mat-icon-button (click)="$event.stopPropagation(); editCall(row)"
+                                    *ngIf="authService.hasPermission('APPOINTMENT_UPDATE')"
+                                    class="tbl-action-btn" matTooltip="Edit Appointment">
+                                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                                </button>
+                                
+                                <button mat-icon-button (click)="$event.stopPropagation(); deleteItem(row)"
+                                    *ngIf="authService.hasPermission('APPOINTMENT_DELETE')"
+                                    class="tbl-action-btn" matTooltip="Cancel Appointment">
+                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                    </mat-table>
+                    
+                    <div *ngIf="!appointments || appointments.length === 0" class="no-results">
+                        No results
+                    </div>
+                    
+                    <mat-paginator #paginator 
+                        [length]="totalRecords" 
+                        [pageIndex]="pageChanged.value - 1" 
+                        [pageSize]="pageSizeChanged.value"
+                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        (page)="onPageChange($event)">
+                    </mat-paginator>
+                </div>
+            </ng-container> </div>
+    </div>
+</section>

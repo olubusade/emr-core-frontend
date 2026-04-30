@@ -1,0 +1,143 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb 
+        [title]="isEditMode ? 'Edit Appointment' : 'Book Appointment'" 
+        [items]="['Appointment']" 
+        [active_item]="isEditMode ? 'Edit' : 'Book'">
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>{{ isEditMode ? 'Modify Appointment Details' : 'Book New Appointment' }}</h2>
+          </div>
+          <div class="body">
+            <form class="m-4" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+              
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                     <mat-label>Search & Select Patient</mat-label>
+                        <mat-select formControlName="patientId" required [disabled]="isEditMode">
+                        
+                        <div class="p-2 sticky-top bg-white" style="z-index: 100;">
+                            <input matInput 
+                                placeholder="Type name or ID to filter..." 
+                                (input)="filterPatients($event)"
+                                (keydown)="$event.stopPropagation()"
+                                class="p-2 border rounded w-100 search-input">
+                        </div>
+                        
+                        <mat-divider></mat-divider>
+
+                        <mat-option *ngFor="let p of filteredPatients" [value]="p.id">
+                            <span class="font-weight-bold">{{p.firstName}} {{p.lastName}}</span> 
+                            <small class="text-muted ml-2"> (ID: {{p.id | shortId}})</small>
+                        </mat-option>
+
+                        <mat-option *ngIf="filteredPatients.length === 0" disabled>
+                            No patients found matching that search
+                        </mat-option>
+
+                        </mat-select>
+                        <mat-hint>Only active patients can be booked</mat-hint>
+                        <mat-error *ngIf="bookingForm.get('patientId')?.hasError('required')">
+                        Please select a patient
+                        </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Consulting Doctor</mat-label>
+                    <mat-select formControlName="doctorId" required>
+                      <mat-option *ngFor="let doc of doctors" [value]="doc.id">
+                        {{doc.fullName}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="bookingForm.get('doctorId').hasError('required')">
+                      Please assign a doctor
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Date of Appointment</mat-label>
+                    <input 
+                      matInput 
+                      [matDatepicker]="picker1" 
+                      formControlName="appointmentDate" 
+                      [min]="minDate" 
+                      required
+                      readonly> 
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    
+                    <mat-error *ngIf="bookingForm.get('appointmentDate').hasError('required')">
+                      Please select a valid future date
+                    </mat-error>
+                    <mat-error *ngIf="bookingForm.get('appointmentDate').hasError('matDatepickerMin')">
+                      Appointments cannot be scheduled in the past
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Time of Appointment</mat-label>
+                    <input matInput type="time" formControlName="appointmentTime" required>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Appointment Type</mat-label>
+                    <mat-select formControlName="type" required>
+                      <mat-option *ngFor="let t of appointmentTypes" [value]="t">
+                        {{ appointmentTypeLabels[t] }}
+                      </mat-option>
+                    </mat-select>
+
+                    <mat-error *ngIf="bookingForm.get('type')?.hasError('required')">
+                      Please select appointment type
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Reason for Visit</mat-label>
+                    <input matInput formControlName="reason" placeholder="e.g. Annual Checkup">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Preliminary Clinical Notes</mat-label>
+                    <textarea matInput formControlName="notes" placeholder="Any additional info for the nurse/doctor"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                  <button mat-raised-button color="primary" [disabled]="!bookingForm.valid" class="btn-space">
+                    {{ isEditMode ? 'Update Appointment' : 'Confirm Booking' }}
+                  </button>
+                  <button type="button" mat-button (click)="router.navigate(['/appointments/today'])">Cancel</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

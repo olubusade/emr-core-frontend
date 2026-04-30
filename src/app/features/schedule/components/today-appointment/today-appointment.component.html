@@ -1,0 +1,271 @@
+<section class="content">
+  <div class="content-block">
+
+    <!-- BREADCRUMB -->
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Today'"
+        [items]="['Appointments']"
+        [active_item]="'Today'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-12">
+        <div class="card">
+
+          <!-- HEADER -->
+          <div class="header">
+            <h2>Today's Appointments</h2>
+          </div>
+
+          <div class="body">
+
+            <!-- SEARCH + ACTIONS -->
+            <div class="materialTableHeader">
+              <div class="row">
+
+                 <div class="col-8">
+                  <ul class="header-buttons-left ms-0">
+                    <li class="dropdown m-l-20">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input #filter type="text" placeholder="Search past appointments..." (input)="applyFilter($event)"
+                        class="browser-default search-field" aria-label="Search box">
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="col-4 text-end">
+
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    *appHasPermission="'APPOINTMENT_CREATE'"
+                    (click)="addNew()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    class="ms-2"
+                    (click)="refreshTable()">
+                    <mat-icon>refresh</mat-icon>
+                  </button>
+
+                </div>
+
+              </div>
+            </div>
+
+            <!-- DATA -->
+            <ng-container *ngIf="appointments$ | async as appointments; else loading">
+
+              <!-- TABLE HEADER (desktop only) -->
+              <div class="appointment-header d-none d-lg-flex mb-2 px-3 py-2 bg-light text-muted border-bottom small fw-bold text-uppercase">
+
+                <div style="flex: 2;">Provider</div>
+                <div style="flex: 1.2;">Booked</div>
+                <div style="flex: 1.5;">Appointment</div>
+                <div style="flex: 1.5;">Patient</div>
+                <div style="flex: 1.2;">Type</div>
+                <div style="flex: 1.2;">Reason</div>
+                <div style="flex: 1;">Status</div>
+                <div style="flex: 2; text-align: right;">Actions</div>
+
+              </div>
+
+              <!-- LIST -->
+              <ul class="list-unstyled" *ngIf="appointments?.length > 0">
+
+                <li
+                  class="app-list px-3 py-3 border-bottom d-flex align-items-center"
+                  *ngFor="let appt of appointments">
+
+                  <!-- PROVIDER -->
+                  <div style="flex: 2;" class="d-flex align-items-center">
+
+                    <img
+                      src="assets/images/avatar.png"
+                      width="35"
+                      class="rounded-circle me-2"
+                      alt="avatar"
+                    />
+
+                    <div>
+                      <div class="fw-bold">
+                        Dr. {{ appt.staff?.fullName || 'N/A' }}
+                      </div>
+                      <div class="text-muted small">
+                        {{ appt.staff?.email || '-' }}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- BOOKED -->
+                  <div style="flex: 1.2;">
+                    <div class="fw-medium">
+                      {{ appt.createdAt | date:'dd MMM yyyy' }}
+                    </div>
+                    <div class="text-muted small">
+                      {{ appt.createdAt | date:'shortTime' }}
+                    </div>
+                  </div>
+
+                  <!-- APPOINTMENT -->
+                  <div style="flex: 1.5;">
+                    <div class="fw-bold text-primary">
+                      {{ appt.appointmentDate | date:'dd MMM yyyy' }}
+                    </div>
+                    <div class="text-muted small">
+                      {{ appt.appointmentTime || '-' }}
+                    </div>
+                  </div>
+
+                  <!-- PATIENT -->
+                  <div style="flex: 1.5;">
+                    <div class="fw-medium">
+                      {{ appt.patient?.fullName || 'N/A' }}
+                    </div>
+                  </div>
+                  <div style="flex: 1.2;">
+                    <div class="font-14 fw-medium"  [matTooltip]="appt.type">
+                      {{ appointmentTypeLabels[appt.type] || '-' }}
+                    </div>
+                  </div>
+
+                  <!-- REASON -->
+                  <div style="flex: 1.2;">
+                    <div
+                      class="text-truncate"
+                      style="max-width: 140px;"
+                      [matTooltip]="appt.reason || appt.notes">
+
+                      {{ appt.reason || appt.notes || '-' }}
+
+                    </div>
+                  </div>
+
+                  <!-- STATUS -->
+                  <div style="flex: 1;">
+                    <span
+                      class="fw-bold small"
+                      [ngClass]="{
+                        'col-green': appt.status === 'scheduled',
+                        'col-orange': appt.status === 'awaiting_vitals',
+                        'col-blue': appt.status === 'vitals_taken',
+                        'col-purple': appt.status === 'completed',
+                        'col-red': appt.status === 'cancelled'
+                      }">
+
+                      {{ getStatus(appt) }}
+
+                    </span>
+                  </div>
+
+                  <!-- ACTIONS -->
+                  <div style="flex: 2;" class="d-flex justify-content-end gap-1">
+                <!--     <button
+                      mat-icon-button
+                      [color]="getCheckinColor(app.status)"
+                      (click)="handleCheckinClick(app)"
+                      matTooltip="{{ getCheckinTooltip(app.status) }}"
+                    >
+                      <mat-icon>
+                        {{ getCheckinIcon(app.status) }}
+                      </mat-icon>
+                    </button> -->
+                    <button
+                      mat-icon-button
+                      matTooltip="History"
+                      (click)="viewPatientHistory(appt)">
+                      <mat-icon class="col-teal">history_edu</mat-icon>
+                    </button>
+
+                    <button
+                      mat-icon-button
+                      *appHasPermission="'VITAL_CREATE'"
+                      matTooltip="Vitals"
+                      (click)="goToVitals(appt)">
+
+                      <mat-icon
+                        [ngClass]="appt.status === 'vitals_taken' ? 'col-green' : 'col-grey'">
+                        monitor_heart
+                      </mat-icon>
+
+                    </button>
+
+                    <button
+                      mat-icon-button
+                      *appHasPermission="'CLINICAL_NOTE_CREATE'"
+                      [disabled]="appt.status !== 'vitals_taken' && appt.status !== 'completed'"
+                      [matTooltip]="getConsultationTooltip(appt)"
+                      (click)="goToClinicalNote(appt)">
+
+                      <mat-icon
+                        [ngClass]="{
+                          'col-purple': appt.status === 'completed',
+                          'col-blue': appt.status === 'vitals_taken',
+                          'col-grey': appt.status !== 'vitals_taken' && appt.status !== 'completed'
+                        }">
+                        assignment
+                      </mat-icon>
+
+                    </button>
+
+                    <button
+                      mat-icon-button
+                      *appHasPermission="'APPOINTMENT_UPDATE'"
+                      matTooltip="Edit"
+                      (click)="editCall(appt)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <button
+                      mat-icon-button
+                      *appHasPermission="'APPOINTMENT_DELETE'"
+                      matTooltip="Delete"
+                      (click)="deleteItem(appt)">
+                      <mat-icon class="col-red">delete</mat-icon>
+                    </button>
+
+                  </div>
+
+                </li>
+
+              </ul>
+
+              <!-- EMPTY STATE -->
+              <app-no-record-found
+                *ngIf="appointments?.length === 0"
+                [message]="'No Appointments for Today'"
+                [subMessage]="'There are no consultations scheduled in this timeframe.'"
+                [showButton]="true"
+                [buttonText]="'Refresh List'"
+                (actionClicked)="refreshTable()">
+              </app-no-record-found>
+
+            </ng-container>
+            <!-- PAGINATOR -->
+            <mat-paginator
+              [length]="totalRecords"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="[5, 10, 25, 50]"
+              (page)="onPageChange($event)">
+            </mat-paginator>
+            <!-- LOADING -->
+           <ng-template #loading>
+              <div class="text-center p-5">
+                <mat-spinner diameter="40" class="m-auto"></mat-spinner>
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

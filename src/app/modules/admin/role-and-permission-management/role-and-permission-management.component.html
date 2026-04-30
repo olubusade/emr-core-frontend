@@ -1,0 +1,142 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Role Management'" [items]="['Settings']" [active_item]="'Roles'"></app-breadcrumb>
+    </div>
+
+    <div *appHasPermission="'PERMISSION_READ'" class="row clearfix">
+      <div class="col-xl-4 col-lg-4 col-md-12">
+        <div class="card h-100">
+          <div class="header d-flex justify-content-between align-items-center">
+            <h2>System Roles ({{ allRoles.length }})</h2>
+            <button
+              *appHasPermission="'ROLE_CREATE'"
+              mat-icon-button
+              color="primary"
+              (click)="openCreateRoleDialog()"
+              matTooltip="Create New Role"
+            >
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+             <button
+            *appHasPermission="'PERMISSION_CREATE'"
+            mat-icon-button
+            color="accent"
+            (click)="openCreatePermissionDialog()"
+                matTooltip="Create New Permission"
+            >
+                <mat-icon>security</mat-icon>
+            </button>
+          </div>
+
+          <div class="body">
+            <div *ngIf="isLoading" class="text-center p-3">
+              <mat-spinner diameter="40" class="m-auto" mode="indeterminate"></mat-spinner>
+              <p>Loading roles...</p>
+            </div>
+
+            <mat-nav-list *ngIf="!isLoading">
+              <mat-list-item
+                *ngFor="let role of allRoles"
+                [class.active]="selectedRole?.id === role.id"
+                (click)="selectRole(role)"
+                style="cursor: pointer;"
+              >
+                <div class="d-flex justify-content-between align-items-center w-100">
+                  <span>
+                    {{ role.name }}
+                    <span *ngIf="selectedRole?.id === role.id" class="badge bg-primary ms-2">Selected</span>
+                  </span>
+                  <button
+                    *appHasPermission="'ROLE_DELETE'"
+                    mat-icon-button
+                    color="warn"
+                    (click)="confirmDeleteRole(role, $event)"
+                    [disabled]="role.name === 'super_admin' || role.name === 'admin'"
+                    matTooltip="Delete Role"
+                  >
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </div>
+              </mat-list-item>
+            </mat-nav-list>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-8 col-lg-8 col-md-12">
+        <div class="card h-100">
+          <div class="header">
+            <h2>
+              Permissions for:
+              <span class="text-primary fw-bold">
+                {{ selectedRole?.name || 'Select a Role' }}
+              </span>
+            </h2>
+            
+          </div>
+
+          <div class="body" *ngIf="selectedRole">
+            <div *ngIf="isLoading" class="text-center p-5">
+              <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+              <p>Loading permissions matrix...</p>
+            </div>
+              <div 
+                  class="mb-4 p-3 border rounded" 
+                  *ngIf="selectedRole.name === 'super_admin' || selectedRole.key === 'admin'"
+              >
+                  <mat-checkbox
+                      [checked]="isAllPermissionsAssigned()"
+                      (change)="toggleAllPermissions($event)"
+                      [disabled]="!authService.hasPermission('PERMISSION_UPDATE') || isSaving"
+                      color="primary"
+                  >
+                      <span class="fw-bold">Check/Uncheck All Permissions</span>
+                      <small class="ms-2 text-muted">(For quick assignment/removal)</small>
+                  </mat-checkbox>
+              </div>
+            <form *ngIf="!isLoading" (ngSubmit)="savePermissions()">
+              <div class="permission-matrix">
+                <div *ngFor="let group of permissionGroups" class="mb-4">
+                  <h6 class="text-primary border-bottom pb-1 mb-2">
+                    {{ group.groupName }} ({{ group.permissions.length }})
+                  </h6>
+
+                  <div class="row">
+                    <div *ngFor="let permission of group.permissions" class="col-md-6 col-lg-4 mb-2">
+                      <mat-checkbox
+                        [checked]="isPermissionAssigned(permission.key)"
+                        (change)="togglePermission(permission.key)"
+                        [disabled]="!authService.hasPermission('PERMISSION_UPDATE') || isSaving"
+                        matTooltip="{{ permission.key }}"
+                      >
+                        {{ permission.name }}
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 text-end border-top pt-3">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                  [disabled]="isSaving || !authService.hasPermission('PERMISSION_UPDATE')"
+                  *appHasPermission="'PERMISSION_UPDATE'"
+                >
+                  <mat-icon *ngIf="isSaving" class="rotating-icon">sync</mat-icon>
+                  {{ isSaving ? 'Saving...' : 'Update Role Permissions' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!authService.hasPermission('PERMISSION_READ')" class="alert alert-danger">
+      You do not have the required permissions to access this interface.
+    </div>
+  </div>
+</section>

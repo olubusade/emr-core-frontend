@@ -1,0 +1,302 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Dashboard'" [items]="[]" [active_item]="'Dashboard'"></app-breadcrumb>
+    </div>
+
+
+    <div *ngIf="!isLoading">
+      <div class="row">
+        
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-purple">
+                <i class="material-icons align-middle">face</i>
+              </div>
+              <div class="card-right">
+                <div>
+                  <h5 class="float-end">Total Patients</h5>
+                </div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0"> {{ patientCount }}</h3>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-orange">
+                <i class="material-icons align-middle">schedule</i>
+              </div>
+              <div class="card-right">
+                <div>
+                  <h5 class="float-end">Total Appointments</h5>
+                </div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0"> {{ totalAppointments}}</h3> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-green">
+                <i class="material-icons align-middle">group</i>
+              </div>
+              <div class="card-right">
+                <div>
+                  <h5 class="float-end">Total Staff</h5>
+                </div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0"> {{ userCount}}</h3> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-blue">
+                <i class="material-icons align-middle">local_activity</i>
+              </div>
+              <div class="card-right">
+                <div>
+                  <h5 class="float-end">Total Revenue</h5>
+                </div>
+                <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0">
+                    {{ totalEarnings | currency:'₦':'symbol':'1.0-0' }}
+                  </h3>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-orange">
+                <i class="material-icons align-middle">warning</i>
+              </div>
+
+              <div class="card-right">
+                <h5 class="float-end">Pending BTG</h5>
+                <h3 class="m-r-10 m-l-10">
+                  {{ pendingBTGCount }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-green">
+                <i class="material-icons align-middle">timer</i>
+              </div>
+
+              <div class="card-right">
+                <h5 class="float-end">Active BTG Sessions</h5>
+                <h3 class="m-r-10 m-l-10">
+                  {{ activeBTGSessionCount }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-green">
+                <i class="material-icons align-middle">check_circle</i>
+              </div>
+
+              <div class="card-right">
+                <h5 class="float-end">Approved BTG</h5>
+                <h3 class="m-r-10 m-l-10">
+                  {{ approvedBTGCount }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-statistic-2">
+            <div class="clearfix">
+              <div class="card-icon shadow-primary bg-red">
+                <i class="material-icons align-middle">cancel</i>
+              </div>
+
+              <div class="card-right">
+                <h5 class="float-end">Rejected BTG</h5>
+                <h3 class="m-r-10 m-l-10">
+                  {{ rejectedBTGCount }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="row clearfix">
+       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card">
+            <div class="header">
+              <h2>Recent Patients</h2>
+            </div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover ">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>DOB</th>
+                      <th>Registered</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let patient of patientList; let i = index">
+                      <td class="table-img">
+                        <img [src]="'assets/images/avatar.png'" alt="">
+                      </td>
+                      <td>
+                        <span class="pid-value">{{ patient.id | shortId }}</span>
+                      </td>
+                      <td>{{ patient.firstName}} {{patient.lastName}}</td>
+                      <td>
+                        <a href="mailto:{{ patient.email }}">{{ patient.email }}</a>
+                      </td>
+                      <td>{{ patient.dob | date: 'mediumDate' }}</td>
+                      <td>{{ patient.createdAt | date: 'mediumDate' }}</td>
+                    </tr>
+                    <tr *ngIf="!patientList || patientList.length === 0">
+                      <td colspan="6" class="text-center">No recent patients found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card">
+            <div class="header">
+              <h2>Recent Appointments</h2>
+            </div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover ">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Patient ID</th>
+                      <th>Assigned Physician</th>
+                      <th>Date</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let appt of bookedAppointments; let i = index">
+                      <td class="table-img">
+                        <img [src]="'assets/images/avatar.png'" alt="">
+                      </td>
+                      <td>
+                        <span class="pid-value">{{ appt.patientId | shortId }}</span>
+                      </td>
+                      <td>Dr. {{ appt.staff?.fullName}}</td>
+                      <td>{{ appt.appointmentDate | date: 'mediumDate' }}, {{ appt.appointmentTime }} </td>
+                      <td>
+                        <div class="badge col-red">{{ appt.reason }}</div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="bookedAppointments.length === 0">
+                      <td colspan="6" class="text-center">No recent appointments found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+          <div class="card">
+            <div class="header">
+              <h2>Active Staff</h2>
+            </div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover ">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Staff ID</th>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                 <tbody>
+                  <tr *ngFor="let staff of staffList; let i = index">
+                    <td class="table-img">
+                      <img [src]="'assets/images/avatar.png'" alt="">
+                    </td>
+                    <td>
+                      <span class="pid-value">{{ staff.id | shortId }}</span></td>
+                    <td>
+                      <div class="media-title">
+                        <a href="mailto:{{ staff.email }}">{{ staff.fullName || staff.email }}</a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="media-title">
+                           <span class="role-chip" [ngClass]="staff.role">
+                            {{ roleLabels[staff.role] }}
+                          </span>
+                      </div>
+                    </td>
+                    <td>
+                      <span [ngClass]="getStaffStatusClass(staff.active)">
+                        {{ getStaffStatusText(staff.active) }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="!staffList || staffList.length === 0">
+                    <td colspan="5" class="text-center">No staff members found.</td>
+                  </tr>
+                </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="text-center p-5">
+      <mat-spinner diameter="40" class="m-auto"></mat-spinner>
+    </div>  
+  </div>
+  
+</section>

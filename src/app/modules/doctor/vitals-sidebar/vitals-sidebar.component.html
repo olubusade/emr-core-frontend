@@ -1,0 +1,130 @@
+<div class="card shadow-sm border-0">
+
+  <!-- HEADER -->
+  <div class="header bg-light-blue text-white py-3">
+    <h2 class="mb-0">
+      <mat-icon class="vertical-align-middle">analytics</mat-icon>
+      Session Vitals
+    </h2>
+  </div>
+
+  <div class="body p-0">
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="p-4 text-center">
+      <mat-spinner diameter="30"></mat-spinner>
+    </div>
+
+    <!-- EMPTY -->
+    <div *ngIf="!loading && !vitals" class="p-4 text-center text-muted">
+      <mat-icon style="font-size:40px;">info</mat-icon>
+      <p>No vitals recorded for this session.</p>
+    </div>
+
+    <!-- VITALS -->
+    <ul class="list-group list-group-flush" *ngIf="vitals">
+
+      <!-- TEMP -->
+      <li class="list-group-item d-flex justify-content-between">
+        <div>
+          <small class="text-muted">Temperature</small><br>
+          <strong>
+            {{ vitals.temperature ?? '-' }}
+            {{ vitals.temperatureUnit }}
+            <span *ngIf="vitals.temperatureUnit === 'C' || vitals.temperatureUnit === 'F'">°</span>
+          </strong>
+        </div>
+        <mat-icon [color]="vitals.temperature > 37.5 ? 'warn' : 'primary'">
+          thermostat
+        </mat-icon>
+      </li>
+
+      <!-- BP -->
+      <li class="list-group-item">
+        <small class="text-muted">Blood Pressure</small><br>
+        <strong>{{ vitals.bloodPressure ?? '-' }}</strong>
+      </li>
+
+      <!-- HR -->
+      <li class="list-group-item">
+        <small class="text-muted">Pulse Rate</small><br>
+        <strong>{{ vitals.heartRate ?? '-' }} bpm</strong>
+      </li>
+
+      <!-- RESP -->
+      <li class="list-group-item">
+        <small class="text-muted">Respiratory Rate</small><br>
+        <strong>{{ vitals.respiratoryRate ?? '-' }} cpm</strong>
+      </li>
+
+      <!-- SPO2 -->
+      <li class="list-group-item d-flex justify-content-between">
+        <div>
+          <small class="text-muted">SpO₂</small><br>
+          <strong [class.text-danger]="vitals.spo2 < 94">
+            {{ vitals.spo2 ?? '-' }}%
+          </strong>
+        </div>
+        <mat-icon [color]="vitals.spo2 < 94 ? 'warn' : 'primary'">
+          bloodtype
+        </mat-icon>
+      </li>
+
+      <!-- BMI -->
+      <li class="list-group-item text-center bg-light py-3">
+        <small class="text-muted">BMI</small><br>
+        <h4 class="mb-0"
+            [class.text-danger]="vitals.bmi >= 25 || vitals.bmi < 18.5">
+
+          {{ vitals.bmi ?? '-' }}
+
+          <small class="text-muted">
+            ({{ vitals.weightKg }}{{ vitals.weightUnit }} /
+             {{ vitals.heightCm }}{{ vitals.heightUnit }})
+          </small>
+
+        </h4>
+      </li>
+
+      <!-- 🧠 SINGLE CLINICAL CONTEXT STRIP -->
+      <li class="list-group-item bg-white">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+          <div>
+            <small class="text-muted d-block">Consciousness</small>
+            <strong>{{ vitals.consciousnessLevel || '-' }}</strong>
+          </div>
+
+          <div>
+            <small class="text-muted d-block">Triage</small>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': vitals.triageLevel === 'LOW',
+                'bg-info': vitals.triageLevel === 'MEDIUM',
+                'bg-warning': vitals.triageLevel === 'HIGH',
+                'bg-danger': vitals.triageLevel === 'CRITICAL'
+              }">
+              {{ vitals.triageLevel || '-' }}
+            </span>
+          </div>
+
+          <div>
+            <small class="text-muted d-block">Source</small>
+            <strong>{{ vitals.source || '-' }}</strong>
+          </div>
+
+          <div>
+            <small class="text-muted d-block">Pain</small>
+            <strong>{{ vitals.painScale ?? 0 }}/10</strong>
+          </div>
+
+        </div>
+
+      </li>
+
+    </ul>
+
+  </div>
+</div>

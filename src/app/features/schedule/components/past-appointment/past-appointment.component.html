@@ -1,0 +1,157 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Past'" [items]="['Appointments']" [active_item]="'Past'"></app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-12">
+        <div class="card">
+          <div class="header">
+            <h2>Past Appointments</h2>
+          </div>
+
+          <div class="body">
+            <div class="materialTableHeader">
+              <div class="row">
+                <div class="col-8">
+                  <ul class="header-buttons-left ms-0">
+                    <li class="dropdown m-l-20">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input #filter type="text" placeholder="Search past appointments..." (input)="applyFilter()"
+                        class="browser-default search-field" aria-label="Search box">
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-4">
+                  <ul class="header-buttons">
+                    <li>
+                      <div class="icon-button-demo">
+                        <button mat-mini-fab color="primary" (click)="refreshTable()">
+                          <mat-icon class="col-white">refresh</mat-icon>
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <ng-container *ngIf="appointments$ | async as appointments; else loading">
+              
+              <div class="appointment-header d-none d-lg-flex mb-2 px-3 py-2 bg-light fw-bold text-muted border-bottom" 
+                   style="display: flex; align-items: center; font-size: 13px; text-transform: uppercase;">
+                <div style="flex: 2;">Provider</div>
+                <div style="flex: 1.2;">Booked On</div>
+                <div style="flex: 1.5;">Appointment Date</div>
+                <div style="flex: 2;">Patient Information</div>
+                <div style="flex: 1.2;">Type</div>
+                <div style="flex: 1.2;">Reason</div>
+                
+                <div style="flex: 1;">Status</div>
+                <div style="flex: 1.5; text-align: right;">Actions</div>
+              </div>
+
+              <ul class="list-unstyled user-progress" *ngIf="appointments.length > 0">
+                <li class="app-list px-3 py-2 border-bottom d-flex align-items-center" *ngFor="let appt of appointments">
+                  
+                  <div style="flex: 2;" class="d-flex align-items-center">
+                    <img alt="avatar" class="msr-3 rounded-circle" width="35" src="assets/images/avatar.png">
+                    <div>
+                      <div class="media-title font-14 fw-bold">Dr. {{ appt.staff?.fullName }}</div>
+                      <div class="text-job text-muted small">{{ appt.staff?.email }}</div>
+                    </div>
+                  </div>
+
+                  <div style="flex: 1.2;">
+                    <div class="font-14 text-muted">{{ appt.createdAt | date:'dd MMM yyyy' }}</div>
+                    <div class="small text-muted">{{ appt.createdAt | date:'shortTime' }}</div>
+                  </div>
+
+                  <div style="flex: 1.5;">
+                    <div class="font-14 fw-bold">{{ appt.appointmentDate | date:'dd MMM yyyy' }}</div>
+                    <div class="text-primary fw-bold small">{{ appt.appointmentTime }}</div>
+                  </div>
+
+                  <div style="flex: 2;">
+                    <div class="font-14 fw-medium">{{ appt.patient?.fullName }}</div>
+                    <div class="text-muted small">{{ appt.patient?.email }}</div>
+                  </div>
+                  <div style="flex: 1.2;">
+                    <div class="font-14 fw-medium"  [matTooltip]="appt.type">
+                      {{ appointmentTypeLabels[appt.type] || '-' }}
+                    </div>
+                  </div>
+                  <div style="flex: 1.2;">
+                    <div class="font-14 text-truncate" style="max-width: 130px;" [matTooltip]="appt.reason">
+                      {{ appt.reason || appt.notes }}
+                    </div>
+                  </div>
+
+                  <div style="flex: 1;">
+                    <span [ngClass]="{
+                      'col-green': appt.status === 'scheduled',
+                      'col-blue': appt.status === 'vitals_taken',
+                      'col-purple': appt.status === 'completed',
+                      'col-red': appt.status === 'cancelled'
+                    }" class="fw-bold small">{{ getStatus(appt) }}</span>
+                  </div>
+
+                  <div style="flex: 1.5; text-align: right;" class="media-cta">
+                    <button mat-icon-button 
+                            class="btn-tbl-confirm" 
+                            matTooltip="View Full Patient Medical History" 
+                            (click)="viewPatientHistory(appt)">
+                      <mat-icon class="col-teal">history_edu</mat-icon>
+                    </button>
+
+                    <button mat-icon-button 
+                            *appHasPermission="'VITAL_CREATE'" 
+                            class="btn-tbl-confirm" 
+                            [disabled]="!canViewVitals(appt)"
+                            [matTooltip]="getVitalsTooltip(appt)"
+                            (click)="viewVitals(appt)">
+                      <mat-icon [ngClass]="canViewVitals(appt) ? 'col-blue' : 'col-grey'">
+                        monitor_heart
+                      </mat-icon>
+                    </button>
+
+                    <button mat-icon-button 
+                            *appHasPermission="'CLINICAL_NOTE_READ'" 
+                            class="btn-tbl-confirm" 
+                            [disabled]="appt.status !== 'completed'"
+                            [matTooltip]="getPastNoteTooltip(appt)"
+                            (click)="viewClinicalNote(appt)">
+                      <mat-icon [ngClass]="appt.status === 'completed' ? 'col-purple' : 'col-grey'">
+                        assignment
+                      </mat-icon>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+
+              <app-no-record-found 
+                *ngIf="appointments.length === 0"
+                [message]="'No Past Appointments'"
+                [subMessage]="'There are no historical consultations to show.'"
+                [showButton]="true"
+                [buttonText]="'Refresh List'"
+                (actionClicked)="refreshTable()">
+              </app-no-record-found>
+            </ng-container>
+
+            <ng-template #loading>
+              <div class="text-center p-5">
+                <mat-spinner diameter="40" class="m-auto"></mat-spinner>
+                <div class="mt-2 text-muted">Retrieving records...</div>
+              </div>
+            </ng-template>
+          </div>
+
+          <mat-paginator [length]="totalRecords" [pageSize]="pageSizeChanged.value" [pageSizeOptions]="[5,10,25,50]" (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

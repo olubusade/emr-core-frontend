@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>
+  Manage Direct Permissions for: 
+  <span class="text-primary">{{ data.userName }}</span>
+</h2>
+
+<div mat-dialog-content class="user-permission-manager-content">
+  <div *ngIf="isLoading" class="text-center p-5">
+    <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+    <p>Loading user permissions matrix...</p>
+  </div>
+  
+  <div *ngIf="!isLoading && authService.hasPermission(updatePermissionKey)">
+    <p class="text-muted">
+      Grant or revoke specific permissions for this user, overriding their inherited role permissions. 
+      (Only permissions checked below will be active for this user.)
+    </p>
+
+    <form (ngSubmit)="savePermissions()">
+      <div class="permission-matrix">
+        <div *ngFor="let group of permissionGroups" class="mb-4">
+          <h6 class="text-primary border-bottom pb-1 mb-2">
+            {{ group.groupName }} ({{ group.permissions.length }})
+          </h6>
+          <div class="row">
+            <div *ngFor="let permission of group.permissions" class="col-md-6 col-lg-4 mb-2">
+              <mat-checkbox
+                [checked]="isPermissionAssigned(permission.key)"
+                (change)="togglePermission(permission.key)"
+                [disabled]="isSaving"
+                matTooltip="{{ permission.key }}"
+                color="primary"
+              >
+                {{ permission.name }}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" [hidden]="true"></button> 
+    </form>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSaving">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="savePermissions()"
+    [disabled]="isSaving || !authService.hasPermission(updatePermissionKey)"
+  >
+    <mat-icon *ngIf="isSaving">sync</mat-icon>
+    {{ isSaving ? 'Saving...' : 'Update User Permissions' }}
+  </button>
+</div>

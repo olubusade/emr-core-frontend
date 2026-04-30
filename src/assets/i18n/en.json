@@ -1,0 +1,316 @@
+{
+  "MENUITEMS": {
+    "MAIN": {
+      "TEXT": "Main"
+    },
+    "ADMIN": {
+      "ROLE-PERMISSION": "Role and Permission",
+      "AUDITS": "Audits",
+      "BREAK-GLASS-REQUESTS": "Break Glass Requests"
+    },
+    "DASHBOARD": {
+      "TEXT": "Dashboard",
+      "LIST": {
+        "DASHBOARD1": "Dashboard",
+        "DASHBOARD2": "Dashboard 2",
+        "DOCTOR-DASHBOARD": "Doctor Dashboard",
+        "PATIENT-DASHBOARD": "Patient Dashboard"
+      }
+    },
+    "APPOINTMENTS": {
+      "TEXT": "Appointments",
+      "LIST": {
+        "VIEW-APPOINTMENT": "View Appointment",
+        "BOOK-APPOINTMENT": "Book Appointment",
+        "EDIT-APPOINTMENT": "Edit Appointment"
+      }
+    },
+    "VISITS": {
+      "TEXT": "Visits",
+      "LIST": {
+        "VIEW-VISITs": "View Visits",
+        "BOOK-VISIT": "Book Visit",
+        "EDIT-VISIT": "Edit Visit"
+      }
+    },
+    "SURGERY": {
+      "TEXT": "Surgery",
+      "LIST": {
+        "VIEW-SURGERY-APPOINTMENT": "View Surgery Appointment"
+      }
+    },
+    "DOCTORS": {
+      "TEXT": "Doctors",
+      "LIST": {
+        "ALL-DOCTOR": "All Doctors",
+        "ADD-DOCTOR": "Add Doctor",
+        "EDIT-DOCTOR": "Edit Doctor",
+        "PROFILE": "Doctor Profile"
+      }
+    },
+    "RECEPTIONISTS": {
+      "TEXT": "Receptionists",
+      "LIST": {
+        "ALL-RECEPTIONISTS": "All Receptionists",
+        "ADD-RECEPTIONIST": "Add Receptionist",
+        "EDIT-RECEPTIONIST": "Edit Receptionist",
+        "PROFILE": "Receptionist Profile"
+      }
+    },
+    "STAFF": {
+      "TEXT": "Staff",
+      "LIST": {
+        "ALL-STAFF": "All Staff",
+        "ADD-STAFF": "Add Staff",
+        "EDIT-STAFF": "Edit Staff",
+        "PROFILE": "Staff Profile"
+      }
+    },
+    "PATIENTS": {
+      "TEXT": "Patients",
+      "LIST": {
+        "ALL-PATIENT": "All Patients",
+        "ADD-PATIENT": "Add Patient",
+        "EDIT-PATIENT": "Edit Patient",
+        "PROFILE": "Patient Profile"
+      }
+    },
+    "PRESCRIPTIONS": {
+      "TEXT": "Prescriptions",
+      "LIST": {
+        "ALL-PRESCRIPTIONS": "All Prescription",
+        "ADD-PRESCRIPTION": "Add Prescription",
+        "EDIT-PRESCRIPTION": "Edit Prescription",
+        "PROFILE": "Prescription Profile"
+      }
+    },
+    "NURSES": {
+      "TEXT": "Nurses",
+      "LIST": {
+        "ALL-NURSE": "All Nurses",
+        "ADD-NURSE": "Add Nurse",
+        "EDIT-NURSE": "Edit Nurse",
+        "PROFILE": "Nurse Profile"
+      }
+    },
+    "NURSE-ASSISTANTS": {
+      "TEXT": "Nurse Assistants",
+      "LIST": {
+        "ALL-NURSE": "All Nurses Assistants",
+        "ADD-NURSE": "Add Nurse Assistant",
+        "EDIT-NURSE": "Edit Nurse Assistant",
+        "PROFILE": "Nurse Assistant Profile"
+      }
+    },
+    "HIM-SPECIALISTS": {
+      "TEXT": "HIM Specialists",
+      "LIST": {
+        "ALL-HIM-SPECIALIST": "All HIM Specialists",
+        "ADD-HIM-SPECIALIST": "Add HIM Specialist",
+        "EDIT-HIM-SPECIALIST": "Edit HIM Specialist",
+        "PROFILE": "HIM Specialist Profile"
+      }
+    },
+    "LAB-TECHNICIANS": {
+      "TEXT": "Lab Technicians",
+      "LIST": {
+        "ALL-LAB-TECHNICIANS": "All Lab Technicians",
+        "ADD-LAB-TECHNICIAN": "Add Lab Technician",
+        "EDIT-LAB-TECHNICIAN": "Edit Lab Technician",
+        "PROFILE": "Lab Technician Profile"
+      }
+    },
+    "RADIOLOGY-TECHNICIANS": {
+      "TEXT": "Radiology Technicians",
+      "LIST": {
+        "ALL-RADIOLOGY-TECHNICIANS": "All Radiology Technicians",
+        "ADD-RADIOLOGY-TECHNICIANS": "Add Radiology Technician",
+        "EDIT-RADIOLOGY-TECHNICIAN": "Edit Radiology Technician",
+        "PROFILE": "Radiology Technician Profile"
+      }
+    },
+    "PHARMACY-TECHNICIANS": {
+      "TEXT": "Pharmacy Technicians",
+      "LIST": {
+        "ALL-PHARMACY-TECHNICIANS": "All Pharmacy Technicians",
+        "ADD-PHARMACY-TECHNICIANS": "Add Pharmacy Technician",
+        "EDIT-PHARMACY-TECHNICIAN": "Edit Pharmacy Technician",
+        "PROFILE": "Pharmacy Technician Profile"
+      }
+    },
+    
+    "TESTS": {
+      "TEXT": "Tests",
+      "LIST": {
+        "ALL-TEST": "All Tests",
+        "ADD-TEST": "Add Test",
+        "EDIT-TEST": "Edit Test",
+        "PROFILE": "Test Profile"
+      }
+    },
+    "TEST-CATEGORY": {
+      "TEXT": "Test Category",
+      "LIST": {
+        "TEST-CATEGORY": "Test Category"
+      }
+    },
+    "ROOMS": {
+      "TEXT": "Room Allotment",
+      "LIST": {
+        "ALLOTED-ROOMS": "Alloted Rooms",
+        "NEW-ALLOTMENT": "New Allotment",
+        "EDIT-ALLOTMENT": "Edit Allotment"
+      }
+    },
+    "BILLING": {
+      "TEXT": "Billing",
+      "LIST": {
+        "BILL-LIST": "Bill List",
+        "ADD-BILL": "Add Bill",
+        "INVOICE": "Invoice"
+      }
+    },
+    "RECORDS": {
+      "TEXT": "Records",
+      "LIST": {
+        "BIRTH-RECORDS": "Birth Records",
+        "DEATH-RECORDS": "Death Records"
+      }
+    },
+    "AMBULANCE": {
+      "TEXT": "Ambulance",
+      "LIST": {
+        "AMBULANCE-CALL-LIST": "Ambulance Call List",
+        "AMBULANCE-LIST": "Ambulance List"
+      }
+    },
+    "PHARMACY": {
+      "TEXT": "Pharmacy",
+      "LIST": {
+        "MEDICINE-LIST": "Medicine List",
+        "ADD-MEDICINE": "Add Medicine"
+      }
+    },
+    "DEPARTMENTS": {
+      "TEXT": "Departments",
+      "LIST": {
+        "DEPARTMENT-LIST": "Department List",
+        "ADD-DEPARTMENT": "Add Department"
+      }
+    },
+    "INVENTORY": {
+      "TEXT": "Inventory",
+      "LIST": {
+        "ITEM-STOCK-LIST": "Item Stock List",
+        "ISSUED-ITEMS": "Issued Items"
+      }
+    },
+    
+    "DOCTOR": {    
+        "DASHBOARD": "Dashboard",
+        "APPOINTMENTS": "Appointments",
+        "DOCTORS": "Doctors",
+        "PATIENTS": "Patients",
+        "SETTINGS": "Settings",
+        "CHAT": "Chat"
+    },
+    "PATIENT": {    
+      "TEXT": "Patient",
+      "DASHBOARD": "Dashboard",
+      "APPOINTMENTS": {
+        "TEXT": "Appointments",
+        "LIST": {
+          "TODAY": "Today Appointments",
+          "UPCOMING": "Upcoming Appointments",
+          "PAST": "Past Appointments"
+        }
+      },
+      "PRESCRIPTIONS": "Prescriptions",
+      "MEDICAL-RECORD": "Medical Record",
+      "BILLING": "Billing",
+      "CHAT": "Chat",
+      "SETTINGS": "Settings"
+    },
+    "PATIENT-ACCESS": {    
+      "TEXT": "Patient Access",
+      "DASHBOARD": "Dashboard",
+      "APPOINTMENTS": {
+        "TEXT": "Appointments",
+        "LIST": {
+          "TODAY": "Today Appointments",
+          "UPCOMING": "Upcoming Appointments",
+          "PAST": "Past Appointments" 
+        }
+      },
+      "VISITS": {
+        "TEXT": "Visits",
+        "LIST": {
+          "BOOK-VISIT": "Book Visit",
+          "TODAY": "Today Visits",
+          "UPCOMING": "Upcoming Visits",
+          "PAST": "Past Visits" 
+        }
+      },
+      "PATIENTS": {
+        "TEXT": "Patients",
+        "LIST": {
+          "ALL-PATIENT": "All Patients",
+          "ADD-PATIENT": "New Patient",
+          "RETURNING-PATIENT": "Returning Patient",
+          "PROFILE": "Patient Profile"
+        }
+      },
+      "MEDICAL-RECORD": "Medical Record",
+      "BILLING": "Billing",
+      "CHAT": "Chat",
+      "SETTINGS": "Settings"
+    },
+    "NURSE": {    
+        "DASHBOARD": "Dashboard",
+        "APPOINTMENTS": "Appointments",
+        "NURSES": "NURSES",
+        "PATIENTS": "Patients",
+        "MEDICAL-RECORD": "Medical Record",
+        "SETTINGS": "Settings",
+        "CHAT": "Chat"
+    },
+    "NURSE-ASSISTANT": {    
+      "DASHBOARD": "Dashboard",
+      "APPOINTMENTS": "Appointments",
+      "PATIENTS": "Patients",
+      "PRESCRIPTIONS": "Prescriptions",
+      "MEDICAL-RECORD": "Medical Record",
+      "NURSES-ASSISTANTS": "Nurse Assistants",
+      "SETTINGS": "Settings",
+      "CHAT": "Chat"
+   },
+   "PHARMACY-TECHNICIAN": {    
+      "DASHBOARD": "Dashboard",
+      "APPOINTMENTS": "Appointments",
+      "PRESCRIPTIONS": {
+        "TEXT": "Prescriptions",
+        "LIST": {
+          "ALL-PRESCRIPTIONS": "All Prescription",
+          "ADD-PRESCRIPTION": "Add Prescription",
+          "EDIT-PRESCRIPTION": "Edit Prescription",
+          "PROFILE": "Prescription Profile"
+        }
+      },
+      "PHARMACY-TECHNICIANS": "Pharmacy Technicians",
+      "SETTINGS": "Settings",
+      "CHAT": "Chat"
+   },
+    "APPS": {
+      "TEXT": "-- Apps"
+    },
+    "CALENDAR": {
+      "TEXT": "Calendar"
+    },
+    "TASK": {
+      "TEXT": "Task"
+    },
+    "CONTACTS": {
+      "TEXT": "Contacts"
+    }
+  }
+}

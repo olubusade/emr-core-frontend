@@ -1,0 +1,210 @@
+<section class="content">
+  <div class="content-block">
+
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'BTG Requests'"
+        [items]="['Admin']"
+        [active_item]="'Break Glass'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="card">
+
+      <div class="header d-flex justify-content-between align-items-center">
+        <h2>Break Glass Requests</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Filter</mat-label>
+          <mat-select [(ngModel)]="selectedFilter">
+            <mat-option value="ALL">All</mat-option>
+            <mat-option value="PENDING">Pending</mat-option>
+            <mat-option value="APPROVED">Approved</mat-option>
+            <mat-option value="REJECTED">Rejected</mat-option>
+            <mat-option value="EXPIRED">Expired</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="body">
+
+        <ng-container *ngIf="filteredRequests as requests">
+
+          <mat-table [dataSource]="requests" *ngIf="requests.length > 0">
+
+            <!-- PATIENT -->
+            <ng-container matColumnDef="patient">
+              <mat-header-cell *matHeaderCellDef>Patient</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                <strong>{{ r.patient.fullName }}</strong>&nbsp; &nbsp; &nbsp; 
+                    <code class="pid-value">{{ r.patient.id | shortId}}</code>
+              </mat-cell>
+            </ng-container>
+
+            <!-- REQUESTER -->
+            <ng-container matColumnDef="requester">
+              <mat-header-cell *matHeaderCellDef>Requester</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                {{ r.requester.fullName }}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="designation">
+              <mat-header-cell *matHeaderCellDef>Designation</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                {{ r.requester.designation }}
+              </mat-cell>
+            </ng-container>
+            <!-- APPROVER -->
+            <ng-container matColumnDef="approver">
+              <mat-header-cell *matHeaderCellDef>Approver</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                {{ r.approver.fullName }}<br>
+              </mat-cell>
+            </ng-container>
+
+            <!-- REASON -->
+            <ng-container matColumnDef="reason">
+              <mat-header-cell *matHeaderCellDef>Reason</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                {{ r.reason }}
+              </mat-cell>
+            </ng-container>
+
+            <!-- STATUS -->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                <span class="badge"
+                  [ngClass]="{
+                    
+                    'bg-warning': r.status === 'PENDING',
+                    'bg-success': r.status === 'APPROVED',
+                    'bg-danger': r.status === 'REJECTED',
+                    'bg-primary': r.status === 'REVOKED',
+                    'bg-secondary': r.status === 'EXPIRED'}">
+                  {{ r.isExpired ? 'EXPIRED' : r.status }}
+                </span>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="expiry">
+                <mat-header-cell *matHeaderCellDef>Expiry</mat-header-cell>
+
+                <mat-cell *matCellDef="let r">
+
+                    <!-- APPROVED → LIVE COUNTDOWN -->
+                    <ng-container *ngIf="r.status === 'APPROVED'; else staticExpiry">
+
+                    <ng-container *ngIf="r.timeLeft$ | async as t">
+
+                        <span [ngClass]="{
+                        'text-danger': t.expired,
+                        'text-primary': !t.expired
+                        }">
+
+                        ⏳ {{ t.display }}
+
+                        </span>
+
+                    </ng-container>
+
+                    </ng-container>
+
+                    <!-- STATIC STATES -->
+                    <ng-template #staticExpiry>
+                    <span class="text-muted">
+                        {{ r.expiresAt | date:'dd MMM yyyy, HH:mm' }}
+                    </span>
+                    </ng-template>
+
+                </mat-cell>
+                </ng-container>
+
+            <!-- CREATED -->
+            <ng-container matColumnDef="createdAt">
+              <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+                {{ r.createdAt | date:'dd MMM yyyy, HH:mm a' }}
+              </mat-cell>
+            </ng-container>
+
+            <!-- ACTIONS -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let r">
+
+                <!--  PENDING -->
+                <ng-container *ngIf="r.status === 'PENDING'">
+
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="approve(r)">
+                    Approve
+                  </button>
+
+                  <button
+                    mat-button
+                    color="warn"
+                    (click)="reject(r)">
+                    Reject
+                  </button>
+
+                </ng-container>
+
+                <!--  APPROVED (ONLY if NOT expired) -->
+                <ng-container *ngIf="r.status === 'APPROVED'">
+
+                  <button
+                    mat-stroked-button
+                    color="warn"
+                    (click)="expire(r)">
+                    Revoke
+                  </button>
+
+                </ng-container>
+
+                <!-- NO ACTION -->
+                <span
+                  *ngIf="
+                  r.status === 'REVOKED' ||  
+                  r.status === 'REJECTED' ||
+                    r.status === 'EXPIRED' ||
+                    r.status === 'APPROVED' && r.isExpired
+                  "
+                  class="text-muted">
+
+                  No actions
+
+                </span>
+
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+          </mat-table>
+
+          <app-no-record-found
+            *ngIf="requests.length === 0 && !loading"
+            [message]="'No BTG requests found.'">
+          </app-no-record-found>
+
+        </ng-container>
+         <!-- PAGINATOR -->
+        <mat-paginator
+          [length]="totalRecords"
+          [pageSize]="pageSize"
+          (page)="onPageChange($event)">
+        </mat-paginator>
+
+        <!-- LOADING -->
+        
+          <div *ngIf="loading" class="text-center p-5">
+              <mat-spinner diameter="40" class="m-auto"></mat-spinner>
+          </div>
+            
+      </div>
+    </div>
+  </div>
+</section>

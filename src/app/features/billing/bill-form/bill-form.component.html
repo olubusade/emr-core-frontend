@@ -1,0 +1,173 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb 
+      [title]="isReadOnly ? 'View Bill' : (isEdit ? 'Edit Bill' : 'New Bill')" 
+      [items]="['Billing']" 
+      [active_item]="isReadOnly ? 'View' : 'Manage'">
+    </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header d-flex justify-content-between align-items-center">
+            <h2>
+              {{ isReadOnly ? 'Finalized Bill (Read-Only)' : (isEdit ? 'Update Billing Details' : 'Generate New Patient Bill') }}
+            </h2>
+            <span *ngIf="isReadOnly" class="badge badge-solid-green">PAID & ARCHIVED</span>
+          </div>
+          <div class="body">
+            <div *ngIf="isReadOnly" class="alert alert-info mx-4 mt-2">
+              <mat-icon class="align-middle me-2">info</mat-icon>
+              This bill is fully paid. Details cannot be modified for audit integrity.
+            </div>
+            <form [formGroup]="billForm" (ngSubmit)="onSubmit()" class="m-4">
+              
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Search & Select Patient (Pending Consultation)</mat-label>
+                        <mat-select formControlName="patientId" required [disabled]="isEdit" (selectionChange)="onSelectionChange($event)">
+                            
+                            <div class="p-2 sticky-top bg-white" style="z-index: 100;">
+                                <input matInput 
+                                    placeholder="Search pending patients..." 
+                                    (input)="filterPatients($event)"
+                                    (keydown)="$event.stopPropagation()"
+                                    class="p-2 border rounded w-100 search-input">
+                            </div>
+                            
+                            <mat-divider></mat-divider>
+
+                            <mat-option *ngFor="let p of filteredQueue" [value]="p.patientId">
+                                <div class="d-flex justify-content-between">
+                                    <span><strong>{{p?.patient?.firstName}} {{p?.patient?.lastName}} (PID: {{p?.patient?.id | shortId}})</strong></span>
+                                    <span class="text-primary small">{{p.diagnosis}}</span>
+                                </div>
+                            </mat-option>
+
+                            <mat-option *ngIf="filteredQueue.length === 0" disabled>
+                                No pending patients found
+                            </mat-option>
+
+                        </mat-select>
+                        <mat-hint>Shows patients who have completed consultations but aren't billed yet</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Amount (₦)</mat-label>
+                        <input matInput formControlName="amount" type="number" required>
+                        <mat-icon matSuffix>payments</mat-icon>
+                        
+                        <mat-hint *ngIf="maxAvailableBalance > 0">
+                        Outstanding Balance: <strong>{{ maxAvailableBalance | currency:'₦':'symbol-narrow' }}</strong>
+                        </mat-hint>
+
+                        <mat-error *ngIf="billForm.get('amount')?.hasError('exceedsBalance')">
+                        Amount cannot exceed the remaining balance of {{ maxAvailableBalance | currency:'₦' }}
+                        </mat-error>
+                    </mat-form-field>
+                    </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option *ngFor="let s of statusOptions" [value]="s.value">{{ s.label }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Payment Method</mat-label>
+                    <mat-select formControlName="paymentMethod">
+                      <mat-option [value]="null">N/A</mat-option>
+                      <mat-option *ngFor="let m of paymentMethods" [value]="m.value">{{ m.label }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput formControlName="dueDate" type="date">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Internal Notes</mat-label>
+                    <textarea matInput formControlName="notes" rows="3"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            <div class="text-danger">
+            </div>
+             <div class="row">
+                <div class="col-12 mt-3">
+                  <button *ngIf="!isReadOnly" 
+                          mat-raised-button color="primary" 
+                          type="submit" 
+                           
+                          class="msr-3">
+                    {{ isEdit ? 'Save Changes' : 'Create Bill' }}
+                  </button>
+                  <button *ngIf="isReadOnly" 
+                          mat-raised-button color="accent" 
+                          type="button" 
+                          (click)="printInvoice()" 
+                          class="msr-3">
+                    <mat-icon>print</mat-icon> Print Invoice
+                  </button>
+                  <button mat-button type="button" (click)="onCancel()">
+                    {{ isReadOnly ? 'Go Back' : 'Cancel' }}
+                  </button>
+                </div>
+              </div>
+
+            </form>
+            
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--PRINT INVOICE-->
+<div id="print-section" style="display: none;">
+  <div class="invoice-container">
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+      <h1>Busade EMR Suite Demo</h1>
+      <small>
+        <a href="mailto:hello@busade.dev">hello@busade.dev</a>
+      </small>
+    </div>
+    <h2>Patient Bill Invoice</h2>
+
+    <p><strong>Patient:</strong> {{ selectedPatient }}</p>
+    <p><strong>Bill ID:</strong> {{ selectedBillId | shortId}}</p>
+    <p><strong>Amount:</strong> {{ billForm.value.amount | currency:'₦' }}</p>
+    <p><strong>Status:</strong> {{ billForm.value.status }}</p>
+    <p><strong>Payment Method:</strong> {{ billForm.value.paymentMethod || 'N/A' }}</p>
+    <p><strong>Due Date:</strong> {{ billForm.value.dueDate | date }}</p>
+
+    <hr>
+
+    <p><strong>Notes:</strong></p>
+    <p>{{ billForm.value.notes }}</p>
+
+    <br><br>
+
+    <p>__________________________</p>
+    <p>Authorized Signature</p>
+  </div>
+</div>

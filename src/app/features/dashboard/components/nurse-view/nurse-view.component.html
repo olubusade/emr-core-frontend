@@ -1,0 +1,186 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Nurse Dashboard'" [items]="[]" [active_item]="'Dashboard'"></app-breadcrumb>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center p-5">
+      <mat-spinner diameter="50" class="m-auto"></mat-spinner>
+      <p class="mt-3">Syncing Nurse Data...</p>
+    </div>
+
+    <ng-container *ngIf="!isLoading && nurseData">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6">
+          <div class="info-box7 l-bg-card1 order-info-box7">
+            <div class="info-box7-block">
+              <h5 class="m-b-15">Today's Patients</h5>
+              <h2 class="text-end"><i class="fas fa-user-injured float-start"></i><span>{{ nurseData.widgets.todayPatients }}</span></h2>
+              <p class="m-b-0">{{ nurseData.widgets.growthRates.patients }}% Growth</p>
+            </div>
+          </div>
+        </div>
+       <div class="col-lg-3 col-sm-6">
+        <div class="info-box7 l-bg-card2 order-info-box7">
+          <div class="info-box7-block">
+            <h5 class="m-b-15">Ready for Doctor</h5>
+            <h2 class="text-end">
+              <i class="fas fa-user-md float-start"></i>
+              <span>{{ nurseData.widgets.readyForDoctor }}</span>
+            </h2>
+            <p class="m-b-0">Triage completed</p>
+          </div>
+        </div>
+      </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="info-box7 l-bg-card3 order-info-box7">
+            <div class="info-box7-block">
+              <h5 class="m-b-15">Pending Vitals</h5>
+              <h2 class="text-end"><i class="fas fa-heartbeat float-start"></i><span>{{ nurseData.widgets.pendingVitals }}</span></h2>
+              <p class="m-b-0">Awaiting triage</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="info-box7 l-bg-cyan order-info-box7">
+            <div class="info-box7-block">
+              <h5 class="m-b-15">Total Registered</h5>
+              <h2 class="text-end"><i class="fas fa-users float-start"></i><span>{{ totals?.patientCount }}</span></h2>
+              <p class="m-b-0">Global Patient Base</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-8 col-lg-8">
+          <div class="card">
+            <div class="header"><h2>Patients Survey</h2></div>
+            <div class="body">
+              <apx-chart [series]="areaChartOptions.series" [chart]="areaChartOptions.chart" [xaxis]="areaChartOptions.xaxis" [colors]="areaChartOptions.colors" [stroke]="areaChartOptions.stroke"></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-4">
+          <div class="card">
+            <div class="header"><h2>Appointment Review</h2></div>
+            <div class="body">
+              <apx-chart [series]="radialChartOptions.series" [chart]="radialChartOptions.chart" [labels]="radialChartOptions.labels" [colors]="radialChartOptions.colors"></apx-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row clearfix">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="header"><h2>Today's Appointments</h2></div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Patient Name</th>
+                      <th>Gender</th>
+                      <th>Last Update</th>
+                      <th>Reason</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let appt of nurseData.todaysAppointments; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td class="table-img">
+                        <img [src]="appt.patient?.profileImage || 'assets/images/avatar.png'" alt="patient">
+                        <span class="ms-2">{{ appt.patient?.firstName }} {{ appt.patient?.lastName }}</span>
+                      </td>
+                      <td>{{ appt.patient?.gender | titlecase }}</td>
+                      <td>{{ appt.updatedAt | date:'shortTime' }}</td>
+                      <td><div class="badge" [ngClass]="appt.tagClass">{{ appt.chiefComplaint }}</div></td>
+                      <td>
+                        <button mat-icon-button color="primary" [routerLink]="['/patients/profile', appt.patientId]">
+                          <mat-icon>visibility</mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr *ngIf="nurseData.todaysAppointments.length === 0">
+                      <td colspan="6" class="text-center p-3 text-muted">No appointments found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="header"><h2>Doctors Status</h2></div>
+            <div class="tableBody">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Doctor</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let doc of nurseData.doctors">
+                      <td class="table-img">
+                        <img [src]="'assets/images/avatar.png'" alt="doctor">
+                        <div class="d-inline-block ms-2">
+                          <div class="media-title font-13">{{ doc.name }}</div>
+                          <div class="text-job font-11 text-muted">{{ doc.specialization }}</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="badge" [ngClass]="doc.status === 'available' ? 'col-green' : 'col-red'">
+                          {{ doc.status | titlecase }}
+                        </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="nurseData.doctors?.length === 0">
+                      <td colspan="2" class="text-center text-muted">No doctors found.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-8 col-lg-8">
+          <div class="card">
+            <div class="header"><h2>Monthly Visit Trends</h2></div>
+            <div class="body">
+              <apx-chart [series]="linechartOptions.series" [chart]="linechartOptions.chart" [xaxis]="linechartOptions.xaxis" [colors]="linechartOptions.colors"></apx-chart>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-xl-4 col-lg-4">
+          <div class="card">
+            <div class="header"><h2>Patient Groups</h2></div>
+            <div class="list-body">
+              <ul class="list-unstyled">
+                <li class="patient-group-list d-flex justify-content-between align-items-center" *ngFor="let group of nurseData.patientGroups">
+                  <div class="d-flex align-items-center">
+                    <div class="lbl-bedge" [ngClass]="group.colorClass">
+                      <span class="lbl-bedge-title">{{ group.name[0] }}</span>
+                    </div>
+                    <div class="group-details ms-3">{{ group.name }}</div>
+                  </div>
+                  <div class="text-muted font-14">{{ group.count }}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

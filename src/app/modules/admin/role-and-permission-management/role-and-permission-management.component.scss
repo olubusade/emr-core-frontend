@@ -1,0 +1,23 @@
+.list-group-item.active, 
+mat-list-item.active {
+  background: #1976d2;
+  color: #fff !important;
+  border-radius: 8px;
+}
+
+mat-checkbox {
+  font-size: 14px;
+}
+
+.rotating-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.card.h-100 {
+  height: 100%;
+}

@@ -1,0 +1,183 @@
+/* You can add global styles to this file, and also import other style files */
+/* ---------------------------------- */
+/* 1. Global Container & Positioning  */
+/* ---------------------------------- */
+.toast-container {
+  /* Fixes the toast to the viewport */
+  position: fixed; 
+  /* Sets the layer to be on top of all page content */
+  z-index: 1050; 
+  
+  /* Positioning (e.g., Top Right corner) */
+  top: 20px;
+  right: 20px;
+  
+  /* Initial state: hidden */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100%); /* Start off-screen to the right */
+  
+  /* Transition for smooth slide-in/out */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s;
+  
+  /* General Styling */
+  max-width: 350px;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+}
+
+/* State when the toast is visible (triggered by [ngClass]="{ 'show': isVisible }") */
+.toast-container.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0); /* Slides into view */
+}
+
+/* ---------------------------------- */
+/* 2. Header and Body Styles          */
+/* ---------------------------------- */
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Subtle separator */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.toast-body {
+  padding: 15px;
+  font-size: 0.95rem;
+  color: #fff; /* Default text color for body */
+}
+
+.me-auto {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.btn-close {
+  /* Basic reset for close button */
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 15px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* ---------------------------------- */
+/* 3. Color Theme Definitions         */
+/* ---------------------------------- */
+
+/* --- SUCCESS --- */
+.toast-container.success {
+  background-color: #4CAF50; /* Green */
+}
+.toast-container.success .toast-header {
+  background-color: #43A047; /* Slightly darker header */
+  color: #fff;
+}
+
+/* --- ERROR --- */
+.toast-container.error {
+  background-color: #F44336; /* Red */
+}
+.toast-container.error .toast-header {
+  background-color: #E53935; /* Slightly darker header */
+  color: #fff;
+}
+
+/* --- WARNING --- */
+.toast-container.warning {
+  background-color: #FF9800; /* Amber/Orange */
+}
+.toast-container.warning .toast-header {
+  background-color: #FB8C00; /* Slightly darker header */
+  color: #fff;
+}
+
+/* --- INFO --- */
+.toast-container.info {
+  background-color: #2196F3; /* Blue */
+}
+.toast-container.info .toast-header {
+  background-color: #1E88E5; /* Slightly darker header */
+  color: #fff;
+}
+
+ .example-full-width { width: 100%; }
+
+ .pid-label{
+  font-size: 11px;
+  font-weight: 700;
+  color: #999;
+  margin-right: 5px;
+ }
+.pid-value{
+  background-color: #f0f2f5;
+  color: #2c3e50;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  border: 1px solid #d1d5db;
+}
+// Role Chips
+.role-chip.receptionist { background: #ff9800; }
+.role-chip.admin { background: #1976d2; }
+.role-chip.doctor { background: #673ab7; }
+.role-chip.nurse { background: #009688; }
+.role-chip.SUPER_ADMIN { background: #2e2e2e; }
+.role-chip.super_admin { background: #2e2e2e; }
+.role-chip {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #fff !important;
+  border: 1px solid #ddd;
+  //text-transform: capitalize;
+}
+
+/* Hover effect (IMPORTANT for polish) */
+.role-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  transition: 0.2s ease-in-out;
+}
+
+.role-btn {
+  color: #fff !important;
+}
+
+.role-btn.admin {
+  background: #1976d2; // blue
+}
+
+.role-btn.nurse {
+  background: #009688; // teal
+}
+
+.role-btn.doctor {
+  background: #673ab7; // purple
+}
+
+.role-btn.receptionist {
+  background: #ff9800; // orange
+}
+
+.role-btn.superadmin {
+  background: #2e2e2e; // dark
+}

@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Create New Permission</h2>
+    <form [formGroup]="permissionForm" (ngSubmit)="onSubmit()">
+      <div mat-dialog-content>
+        <p class="text-muted">Define a unique Key and Name for the new system permission.</p>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Permission Key (UPPERCASE_SNAKE)</mat-label>
+          <input 
+            matInput 
+            formControlName="key" 
+            placeholder="e.g., INVENTORY_CREATE" 
+            (input)="permissionForm.patchValue({key: $event.target.value.toUpperCase()})"
+            required
+          >
+          <mat-error *ngIf="permissionForm.controls['key'].hasError('required')">Key is required</mat-error>
+          <mat-error *ngIf="permissionForm.controls['key'].hasError('pattern')">Must use uppercase letters and underscores only (A-Z,_)</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Permission Name (User Friendly)</mat-label>
+          <input matInput formControlName="name" placeholder="e.g., Inventory Create" required>
+          <mat-error *ngIf="permissionForm.controls['name'].hasError('required')">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Description (Optional)</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+      <div mat-dialog-actions align="end">
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          [disabled]="permissionForm.invalid"
+        >
+          Create Permission
+        </button>
+      </div>
+    </form>

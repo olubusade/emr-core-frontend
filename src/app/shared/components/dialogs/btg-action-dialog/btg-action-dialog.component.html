@@ -1,0 +1,51 @@
+<h2 mat-dialog-title class="text-capitalize">{{ action | lowercase }} BTG Request</h2>
+
+<mat-dialog-content [formGroup]="form" class="mt-2">
+  <p class="mb-3 text-secondary">
+    Please provide a justification for this <strong>{{ action }}</strong> action for audit compliance.
+  </p>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Select Reason</mat-label>
+    <mat-select
+      formControlName="reasonType"
+      (selectionChange)="onReasonChange($event.value)">
+      <mat-option *ngFor="let r of reasonOptions" [value]="r.value">
+        {{ r.label }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('reasonType')?.hasError('required')">
+      A selection is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field
+    *ngIf="isOtherReason"
+    appearance="outline"
+    class="w-100 animate__animated animate__fadeIn">
+    <mat-label>Custom Justification</mat-label>
+    <textarea
+      matInput
+      formControlName="decisionReason"
+      placeholder="Describe the clinical necessity..."
+      rows="3">
+    </textarea>
+    <mat-error *ngIf="form.get('decisionReason')?.hasError('required')">
+      Detailed reason is required
+    </mat-error>
+    <mat-error *ngIf="form.get('decisionReason')?.hasError('minlength')">
+      Please provide at least 5 characters
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pb-3 px-3">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    [disabled]="form.invalid"
+    (click)="submit()">
+    Confirm {{ action | titlecase }}
+  </button>
+</mat-dialog-actions>

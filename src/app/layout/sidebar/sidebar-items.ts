@@ -1,0 +1,502 @@
+import { RouteInfo } from "./sidebar.metadata";
+export const ROUTES: RouteInfo[] = [
+  {
+    path: "",
+    title: "MENUITEMS.MAIN.TEXT",
+    moduleName: "",
+    iconType: "",
+    icon: "",
+    class: "",
+    groupTitle: true,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN","ADMIN"],
+    permissionKey: "DASHBOARD_VIEW",
+    submenu: []
+  },
+//
+  // ─── RECEPTIONIST MODULES ─────────────────────────────────────────────
+  //
+  {
+    path: "/dashboard",
+    title: "MENUITEMS.PATIENT-ACCESS.DASHBOARD",
+    moduleName: "dashboard",
+    iconType: "material-icons-two-tone",
+    icon: "space_dashboard",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["RECEPTIONIST"],
+    permissionKey: "RECEPTIONIST_DASHBOARD_VIEW",
+    submenu: [],
+  },
+  //
+  // ─── ADMIN MODULES ─────────────────────────────────────────────
+  //
+  //Dashboard
+  {
+    path: "/dashboard",
+    title: "MENUITEMS.DASHBOARD.LIST.DASHBOARD1",
+    moduleName: "dashboard",
+    iconType: "material-icons-two-tone",
+    icon: "space_dashboard",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN", "ADMIN"],
+    permissionKey: "DASHBOARD_VIEW",
+    submenu: [],
+  },
+  {
+    path: "/dashboard",
+    title: "MENUITEMS.DOCTOR.DASHBOARD",
+    moduleName: "dashboard",
+    iconType: "material-icons-two-tone",
+    icon: "space_dashboard",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+  roles: ["DOCTOR"],
+    permissionKey: "DOCTOR_DASHBOARD_VIEW",
+    submenu: []
+  },
+
+  {
+    path: "/dashboard",
+    title: "MENUITEMS.NURSE.DASHBOARD",
+    moduleName: "dashboard",
+    iconType: "material-icons-two-tone",
+    icon: "space_dashboard",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["NURSE"],
+    permissionKey: "NURSE_DASHBOARD_VIEW",
+    submenu: []
+  },
+  
+//
+  // ─── PATIENTS MODULES FOR ADMIN AND RECEPTIONIST ─────────────────────────────────────────────
+  //
+  {
+    path: "",
+    title: "MENUITEMS.PATIENTS.TEXT",
+    moduleName: "patients",
+    iconType: "material-icons-two-tone",
+    icon: "face",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN", "ADMIN","RECEPTIONIST"],
+    permissionKey: "PATIENT_CREATE",
+    submenu: [
+      {
+        path: "/patients/all",
+        title: "MENUITEMS.PATIENTS.LIST.ALL-PATIENT",
+        moduleName: "patients",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN","RECEPTIONIST"],
+        permissionKey: "PATIENT_CREATE",
+        submenu: [],
+      }
+    
+    ],
+  },
+  /**Appointments Module */
+  {
+    path: "",
+    title: "MENUITEMS.APPOINTMENTS.TEXT",
+    moduleName: "appointment",
+    iconType: "material-icons-two-tone",
+    icon: "assignment",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "DOCTOR", "NURSE"],
+    permissionKey: "APPOINTMENT_READ",
+    submenu: [
+      {
+        path: "/appointments/upcoming",
+        title: "MENUITEMS.PATIENT-ACCESS.APPOINTMENTS.LIST.UPCOMING",
+        moduleName: "appointment",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "DOCTOR", "NURSE"],
+        permissionKey: "APPOINTMENT_READ",
+        submenu: [],
+      },
+      {
+        path: "/appointments/today",
+        title: "MENUITEMS.PATIENT-ACCESS.APPOINTMENTS.LIST.TODAY",
+        moduleName: "appointment",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "DOCTOR", "NURSE"],
+        permissionKey: "APPOINTMENT_READ",
+        submenu: [],
+      },
+      {
+        path: "/appointments/past",
+        title: "MENUITEMS.PATIENT-ACCESS.APPOINTMENTS.LIST.PAST",
+        moduleName: "appointment",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "DOCTOR", "NURSE"],
+        permissionKey: "APPOINTMENT_READ",
+        submenu: [],
+      },
+   
+    ],
+  },
+   //
+  // ─── NURSES MODULES ─────────────────────────────────────────────
+  //
+  /*  {
+    path: "",
+    title: "MENUITEMS.NURSES.TEXT",
+    moduleName: "nurses",
+    iconType: "material-icons-two-tone",
+    icon: "supervised_user_circle",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["NURSE"],
+    permissionKey: "NURSE_CREATE",
+    submenu: [
+      {
+        path: "/nurses/all",
+        title: "MENUITEMS.NURSES.LIST.ALL-NURSE",
+        moduleName: "nurses",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN"],
+        permissionKey: "NURSE_CREATE",
+        submenu: [],
+      }
+    
+    ],
+  } , */
+  /**Doctors Module */
+/*   {
+    path: "",
+    title: "MENUITEMS.DOCTORS.TEXT",
+    moduleName: "doctors",
+    iconType: "material-icons-two-tone",
+    icon: "supervised_user_circle",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["DOCTOR"],
+    permissionKey: "DOCTOR_CREATE",
+    submenu: [
+      {
+        path: "/doctors/all",
+        title: "MENUITEMS.DOCTORS.LIST.ALL-DOCTOR",
+        moduleName: "doctors",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN"],
+        permissionKey: "USER_CREATE",
+        submenu: [],
+      }
+    
+    ],
+  }, */
+
+ /**Reception Module */
+  /* {
+    path: "",
+    title: "MENUITEMS.RECEPTIONISTS.TEXT",
+    moduleName: "receptionists",
+    iconType: "material-icons-two-tone",
+    icon: "supervised_user_circle",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN", "ADMIN","RECEPTIONIST"],
+    permissionKey: "USER_CREATE",
+    submenu: [
+      {
+        path: "/receptionists/all",
+        title: "MENUITEMS.RECEPTIONISTS.LIST.ALL-RECEPTIONISTS",
+        moduleName: "receptionists",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN"],
+        permissionKey: "USER_CREATE",
+        submenu: [],
+      }
+    
+    ],
+  }, */
+ 
+
+  //
+  // ─── BILLING MODULES ─────────────────────────────────────────────
+  //
+  {
+    path: "",
+    title: "MENUITEMS.BILLING.TEXT",
+    moduleName: "billing",
+    iconType: "material-icons-two-tone",
+    icon: "monetization_on",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN", "ADMIN","RECEPTIONIST"],
+    permissionKey: "BILL_CREATE",
+    submenu: [
+      {
+        path: "/billing/all",
+        title: "MENUITEMS.BILLING.LIST.BILL-LIST",
+        moduleName: "Billing",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN","RECEPTIONIST"],
+        permissionKey: "BILL_READ",
+        submenu: [],
+      }
+    
+    ],
+  },
+  /* {
+    path: "",
+    title: "MENUITEMS.STAFF.TEXT",
+    moduleName: "staff",
+    iconType: "material-icons-two-tone",
+    icon: "people_alt",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN"],
+    permissionKey: "USER_CREATE",
+    submenu: [
+      {
+        path: "/admin-config/staff",
+        title: "MENUITEMS.STAFF.LIST.ALL-STAFF",
+        moduleName: "staff",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["SUPER_ADMIN", "ADMIN"],
+        permissionKey: "USER_READ",
+        submenu: [],
+      }
+    ],
+  }, */
+ {
+  path: "/admin-config/audits",
+  title: "MENUITEMS.ADMIN.AUDITS",
+  moduleName: "audits",
+  iconType: "material-icons-two-tone",
+  icon: "fact_check",
+  class: "",
+  groupTitle: false,
+  badge: "",
+  badgeClass: "",
+  roles: ["SUPER_ADMIN","ADMIN"],
+  permissionKey: "AUDIT_READ",
+  submenu: [],
+},
+{
+  path: "/admin-config/btg-requests",
+  title: "MENUITEMS.ADMIN.BREAK-GLASS-REQUESTS",
+  moduleName: "break-glass-requests",
+  iconType: "material-icons-two-tone",
+  icon: "security",
+  class: "",
+  groupTitle: false,
+  badge: "",
+  badgeClass: "",
+  roles: ["SUPER_ADMIN","ADMIN"],
+  permissionKey: "BREAK_GLASS_READ",
+  submenu: [],
+},
+  {
+    path: "/admin-config/role-and-permission",
+    title: "MENUITEMS.ADMIN.ROLE-PERMISSION",
+    moduleName: "role-and-permission",
+    iconType: "material-icons-two-tone",
+    icon: "settings",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["SUPER_ADMIN"],
+    permissionKey: "USER_CREATE",
+    submenu: [],
+  }, 
+  /**End of Admin Modules */
+
+
+  /**Doctor Module */
+  {
+    path: "/patients/all",
+    title: "MENUITEMS.DOCTOR.PATIENTS",
+    moduleName: "patients",
+    iconType: "material-icons-two-tone",
+    icon: "face",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["DOCTOR"],
+    permissionKey: "PATIENT_READ",
+    submenu: [],
+  },
+  //
+  // ─── NURSE MODULES ─────────────────────────────────────────────
+  //
+  {
+    path: "/patients/all",
+    title: "MENUITEMS.NURSE.PATIENTS",
+    moduleName: "patients",
+    iconType: "material-icons-two-tone",
+    icon: "face",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["NURSE"],
+    permissionKey: "PATIENT_READ",
+    submenu: [],
+  },
+
+  //
+  // ─── PATIENT MODULES ─────────────────────────────────────────────
+  //
+  {
+    path: "/dashboard",
+    title: "MENUITEMS.PATIENT.DASHBOARD",
+    moduleName: "dashboard",
+    iconType: "material-icons-two-tone",
+    icon: "space_dashboard",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["PATIENT"],
+    permissionKey: "PATIENT_DASHBOARD_VIEW",
+    submenu: [],
+  },
+  {
+    path: "",
+    title: "MENUITEMS.PATIENT.APPOINTMENTS.TEXT",
+    moduleName: "appointments",
+    iconType: "material-icons-two-tone",
+    icon: "assignment",
+    class: "menu-toggle",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["PATIENT"],
+    permissionKey: "PATIENT_READ",
+    submenu: [
+      {
+        path: "/patient/appointments/today",
+        title: "MENUITEMS.PATIENT.APPOINTMENTS.LIST.TODAY",
+        moduleName: "appointments",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["PATIENT"],
+        permissionKey: "PATIENT_READ",
+        submenu: [],
+      },
+      {
+        path: "/patient/appointments/upcoming",
+        title: "MENUITEMS.PATIENT.APPOINTMENTS.LIST.UPCOMING",
+        moduleName: "appointments",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["PATIENT"],
+        permissionKey: "PATIENT_READ",
+        submenu: [],
+      },
+      {
+        path: "/patient/appointments/past",
+        title: "MENUITEMS.PATIENT.APPOINTMENTS.LIST.PAST",
+        moduleName: "appointments",
+        iconType: "",
+        icon: "",
+        class: "ml-menu",
+        groupTitle: false,
+        badge: "",
+        badgeClass: "",
+        roles: ["PATIENT"],
+        permissionKey: "PATIENT_READ",
+        submenu: [],
+      },
+    ],
+  },
+  {
+    path: "/patient/settings",
+    title: "MENUITEMS.PATIENT.SETTINGS",
+    moduleName: "settings",
+    iconType: "material-icons-two-tone",
+    icon: "settings",
+    class: "",
+    groupTitle: false,
+    badge: "",
+    badgeClass: "",
+    roles: ["PATIENT"],
+    permissionKey: "PATIENT_SETTINGS_MANAGE",
+    submenu: [],
+  },
+
+  
+];

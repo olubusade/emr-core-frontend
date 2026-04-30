@@ -1,0 +1,170 @@
+[
+    {
+        "fname": "Cortez",
+        "lname": "Gaines",
+        "gender": "male",
+        "address": "423 Bay Parkway"
+    },
+    {
+        "fname": "Reba",
+        "lname": "Bowen",
+        "gender": "female",
+        "address": "663 Hale Avenue"
+    },
+    {
+        "fname": "Wallace",
+        "lname": "Bush",
+        "gender": "male",
+        "address": "955 Lawn Court"
+    },
+    {
+        "fname": "Angel",
+        "lname": "Dawson",
+        "gender": "female",
+        "address": "919 Lott Street"
+    },
+    {
+        "fname": "Mclaughlin",
+        "lname": "Norton",
+        "gender": "male",
+        "address": "228 Kossuth Place"
+    },
+    {
+        "fname": "Poole",
+        "lname": "Ware",
+        "gender": "male",
+        "address": "560 Gerald Court"
+    },
+    {
+        "fname": "Howard",
+        "lname": "Mack",
+        "gender": "male",
+        "address": "887 George Street"
+    },
+    {
+        "fname": "John",
+        "lname": "Hewitt",
+        "gender": "female",
+        "address": "494 Amber Street"
+    },
+    {
+        "fname": "Flossie",
+        "lname": "Grimes",
+        "gender": "female",
+        "address": "436 Ridge Court"
+    },
+    {
+        "fname": "Donaldson",
+        "lname": "Johnston",
+        "gender": "male",
+        "address": "553 Albemarle Road"
+    },
+    {
+        "fname": "Angie",
+        "lname": "Stewart",
+        "gender": "female",
+        "address": "785 Juliana Place"
+    },
+    {
+        "fname": "Hancock",
+        "lname": "Kennedy",
+        "gender": "male",
+        "address": "981 Remsen Street"
+    },
+    {
+        "fname": "Simmons",
+        "lname": "Tucker",
+        "gender": "male",
+        "address": "100 Battery Avenue"
+    },
+    {
+        "fname": "Fletcher",
+        "lname": "Garza",
+        "gender": "male",
+        "address": "401 Pineapple Street"
+    },
+    {
+        "fname": "Hicks",
+        "lname": "Ferguson",
+        "gender": "male",
+        "address": "262 Ocean Avenue"
+    },
+    {
+        "fname": "Snyder",
+        "lname": "Bullock",
+        "gender": "male",
+        "address": "474 Sedgwick Place"
+    },
+    {
+        "fname": "Mckay",
+        "lname": "Hays",
+        "gender": "male",
+        "address": "624 Wythe Avenue"
+    },
+    {
+        "fname": "Margaret",
+        "lname": "Riley",
+        "gender": "female",
+        "address": "721 Debevoise Street"
+    },
+    {
+        "fname": "Christy",
+        "lname": "Rogers",
+        "gender": "female",
+        "address": "615 Nassau Avenue"
+    },
+    {
+        "fname": "Graciela",
+        "lname": "Duran",
+        "gender": "female",
+        "address": "118 Havemeyer Street"
+    },
+    {
+        "fname": "Mann",
+        "lname": "Charles",
+        "gender": "male",
+        "address": "127 Charles Place"
+    },
+    {
+        "fname": "Adams",
+        "lname": "Hardy",
+        "gender": "male",
+        "address": "163 Hawthorne Street"
+    },
+    {
+        "fname": "Daisy",
+        "lname": "Benton",
+        "gender": "female",
+        "address": "135 Aurelia Court"
+    },
+    {
+        "fname": "Richmond",
+        "lname": "Payne",
+        "gender": "male",
+        "address": "759 Bayard Street"
+    },
+    {
+        "fname": "Dejesus",
+        "lname": "Clayton",
+        "gender": "male",
+        "address": "312 Stewart Street"
+    },
+    {
+        "fname": "Giles",
+        "lname": "Sullivan",
+        "gender": "male",
+        "address": "741 Underhill Avenue"
+    },
+    {
+        "fname": "Donovan",
+        "lname": "Boone",
+        "gender": "male",
+        "address": "124 Grattan Street"
+    },
+    {
+        "fname": "Imelda",
+        "lname": "Baird",
+        "gender": "female",
+        "address": "487 Dahlgreen Place"
+    }
+]

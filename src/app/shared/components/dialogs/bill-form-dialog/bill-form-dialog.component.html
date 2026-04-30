@@ -1,0 +1,76 @@
+<h2 mat-dialog-title class="mb-0">{{ title }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="pt-3">
+    
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Patient</mat-label>
+      <mat-select formControlName="patientId" required [disabled]="isEdit">
+        <div class="p-2 sticky-top bg-white" style="z-index: 10;">
+          <input matInput 
+                 placeholder="Search patient name..." 
+                 (input)="filterPatients($event)" 
+                 (keydown)="$event.stopPropagation()"
+                 class="p-2 border rounded w-100">
+        </div>
+        <mat-divider></mat-divider>
+        <mat-option *ngFor="let p of filteredPatients" [value]="p.id">
+          {{ p.firstName }} {{ p.lastName }}
+        </mat-option>
+        <mat-option *ngIf="filteredPatients.length === 0" disabled>No matches found</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Amount (NGN)</mat-label>
+          <input matInput formControlName="amount" type="number" required>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Bill Status</mat-label>
+          <mat-select formControlName="status" required>
+            <mat-option *ngFor="let s of statusOptions" [value]="s.value">
+              {{ s.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Due Date</mat-label>
+          <input matInput formControlName="dueDate" type="date">
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Payment Method</mat-label>
+          <mat-select formControlName="paymentMethod">
+            <mat-option [value]="null">Select Method</mat-option>
+            <mat-option *ngFor="let m of paymentMethods" [value]="m.value">
+              {{ m.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" rows="2"></textarea>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pb-3 pe-3">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="onSubmit()">
+    {{ isEdit ? 'Save Changes' : 'Generate Bill' }}
+  </button>
+</mat-dialog-actions>
