@@ -17,7 +17,7 @@
 ## ▶️ EMR System Overview (Start Here)
 Short recruiter-focused walkthrough of the EMR platform architecture, workflows, security model, and deployment strategy.
 
-🔗 https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e
+[🔗 https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e](https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e)
 
 
 ## 🌍 Live Frontend Application
