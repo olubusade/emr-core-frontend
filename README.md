@@ -14,15 +14,32 @@
 ---
 # 🎥 Live Demo & Walkthrough
 
-▶️ **System Walkthrough (6–12 mins)**  
- https://www.loom.com/share/eefaf3b4384a48338490bd6e730d9be2
+## ▶️ EMR System Overview (Start Here)
+Short recruiter-focused walkthrough of the EMR platform architecture, workflows, security model, and deployment strategy.
 
-🌍 **Live Application (Frontend)**  
-- <a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">Live Application (Frontend)</a>
+🔗 https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e
 
 
-🌍 **Live Backend API (Swagger Docs)**  
-- [https://emrapi.busade.dev/api/docs](https://emrapi.busade.dev/api/docs)
+## 🌍 Live Frontend Application
+<a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">
+Launch EMR Frontend
+</a>
+
+> Demo credentials for Admin, Physician, and Nurse roles are pre-filled on the login screen for easier evaluation.
+
+
+## ▶️ Full Frontend Walkthrough
+Complete walkthrough covering:
+- Patient registration
+- Appointment scheduling
+- Vitals capture
+- Clinical documentation
+- Billing workflow
+- Role-based access control
+- Break-The-Glass emergency access
+- Audit tracking
+
+🔗 https://www.loom.com/share/25451e60b8c3415385ff6ab179d8feb7
 
 
 ## 🧪 End-to-End Clinical Workflow (Role + Emergency + Governance)
