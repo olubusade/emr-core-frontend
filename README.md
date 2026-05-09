@@ -14,8 +14,8 @@
 ---
 # 🎥 Live Demo & Walkthrough
 
-## ▶️ EMR System Overview (Start Here)
-Short recruiter-focused walkthrough of the EMR platform architecture, workflows, security model, and deployment strategy.
+## ▶️ Watch: The Full Clinical Lifecycle & System Architecture
+A robust, compliance-first Electronic Medical Record (EMR) frontend and backend designed for high-stakes clinical environments. This system bridges the gap between modern cloud-native architecture and rigorous healthcare data standards, focusing on data integrity, forensic auditability, and interoperable communication.
 
 🔗 https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e
 
@@ -320,6 +320,8 @@ Backend exposes RESTful and FHIR-aligned endpoints via Swagger documentation, en
 - **Modules = WHO (User context)**
 - **Features = WHAT (Business capability)**
 
+**Scalability & Performance:** The frontend utilizes a Lazy-Loading strategy combined with OnPush Change Detection to ensure high performance even as the clinical data sets grow. By decoupling the 'User Context' (WHO) from 'Business Capability' (WHAT), the system is architected for a future transition into a Micro-Frontend ecosystem.
+
 ---
 
 ## 🏗️ High-Level Flow
@@ -397,6 +399,8 @@ Login → JWT → Interceptor → Guard → Permission Check → Backend Validat
 ```
 UI → Service → API → Response → Observable → UI
 ```
+
+**Reactive Integrity:** I chose a Reactive Service Architecture (RxJS) over a heavy global store (like NgRx) to maintain a lightweight footprint while ensuring real-time synchronization across different clinical roles. This ensures that when a Nurse saves vitals, the Doctor’s dashboard reflects the update with zero-latency state transitions.
 
 ---
 
